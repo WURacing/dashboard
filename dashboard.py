@@ -21,7 +21,9 @@ def draw_indicator(angle,length,center_x,center_y):
 	x_pos = center_x - x_len # Finds the x and y 
 	y_pos = center_y - y_len
 
-	pygame.draw.line(screen,red,(center_x,center_y),(x_pos,y_pos),2)
+	pygame.draw.line(screen,red,(center_x,center_y),(x_pos,y_pos),4)
+
+	pygame.draw.circle(screen, red, (center_x,center_y), int(length/15))
 
 
 # Draws tick marks along the outside of circles
@@ -46,13 +48,13 @@ def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
 
 		#print x_pos, y_pos, inner_x_pos, inner_y_pos								# debug
 
-		pygame.draw.line(screen,white,(x_pos,y_pos),(inner_x_pos,inner_y_pos),5)	# draws tick mark
+		pygame.draw.line(screen,white,(x_pos,y_pos),(inner_x_pos,inner_y_pos),6)	# draws tick mark
 
 		num = font.render(str(mark),1,white)
 
 		(num_width,num_height) = font.size(str(num))
 
-		screen.blit(num,(num_x_pos-10,num_y_pos-(num_height/2)))
+		screen.blit(num,(num_x_pos-5,num_y_pos-(num_height/2)))
 
 
 # Draws redline on outside of circle
@@ -89,18 +91,17 @@ pygame.draw.circle(screen, black, (160, 240), 200, 0)
 pygame.draw.rect(screen, green, (400,20,250,190))
 pygame.draw.rect(screen, green, (400,270,250,190))
 
-draw_tick_marks(45,315,14,160,240,200)
+font = pygame.font.Font(None, 36)
 
-draw_redline_arc(305,315,160,240,200)
+draw_tick_marks(45,315,14,160,240,200)
 
 
 
 while 1:
 	for i in range(45,315):
 		pygame.draw.circle(screen, black, (160, 240), 200, 0)
-		draw_tick_marks(45,315,14,160,240,200)
 		draw_redline_arc(305,315,160,240,200)
-
+		draw_tick_marks(45,315,14,160,240,200)
 		draw_indicator(i,190,160,240)
 
 		pygame.display.update()
