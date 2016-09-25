@@ -1,7 +1,19 @@
+
 import pygame 			# Graphics and Drawing Module
 import serial			# Serial Library
 import time				# For delays
 import math				# sin, cos, etc
+
+# Draws pointer on dials
+def draw_indicator(angle,length,center_x,center_y):
+
+	x_len = math.cos(math.radians(angle))*float(length)
+	y_len = math.sin(math.radians(angle))*float(length)
+
+	x_pos = center_x - x_len
+	y_pos = center_y - y_len
+
+	pygame.draw.line(screen,red,(center_x,center_y),(x_pos,y_pos),2)
 
 
 # Draws tick marks along the outside of circles
@@ -26,14 +38,14 @@ def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
 		pygame.draw.line(screen,white,(x_pos,y_pos),(inner_x_pos,inner_y_pos),5)	# draws tick mark
 
 # Draws redline on outside of circle
-def draw_redline(startAngle,stopAngle,center_x,center_y,radius):
+def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
 	rect = (center_x-radius,center_y-radius,2*radius,2*radius)		# Defines the rectangle to draw arc in
 
 	start_radians = math.radians((-stopAngle)+180)					# Converts between our "unit circle" and standard unic circle
 	stop_radians = math.radians((-startAngle)+180)
 
-	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,5)	# Draws Arc
+	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
 
 
 ############# Color Definitions
@@ -59,14 +71,19 @@ pygame.draw.rect(screen, green, (400,270,250,190))
 
 draw_tick_marks(45,315,14,160,240,200)
 
-draw_redline(305,315,160,240,200)
+draw_redline_arc(305,315,160,240,200)
 
 
 
 while 1:
-	pygame.display.update()
+	for i in range(45,315):
+		pygame.draw.circle(screen, black, (160, 240), 200, 0)
+		draw_tick_marks(45,315,14,160,240,200)
+		draw_redline_arc(305,315,160,240,200)
 
+		draw_indicator(i,190,160,240)
 
+		pygame.display.update()
 
 
 
