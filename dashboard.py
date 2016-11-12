@@ -5,12 +5,21 @@
 
 ###############################################################################################################
 
+# -*- coding: utf-8 -*-
+
 # Import statements
 
 import pygame 			# Graphics and Drawing Module
 import serial			# Serial Library
 import time				# For delays
 import math				# sin, cos, etc
+
+# Is this a test or not
+test = True
+
+# Initialize serial
+if (not test): 
+	arduino = serial.Serial('/dev/ttyUSB0',9600)
 
 # Draws pointer on dials
 def draw_indicator(angle,length,center_x,center_y):
@@ -78,36 +87,49 @@ white = (255,255,255)
 
 pygame.init()
 
-font = pygame.font.Font(None, 36)
+font = pygame.font.Font("fonts/comic_book.ttf", 24)
 
 display_size=width, height=800,480 # Size of the Adafruit screen
 
 screen = pygame.display.set_mode(display_size)
 
-pygame.display.toggle_fullscreen()
+#pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
 screen.fill(grey)
 
 pygame.draw.circle(screen, black, (160, 240), 200, 0)
 
-pygame.draw.rect(screen, green, (400,20,250,190))
-pygame.draw.rect(screen, green, (400,270,250,190))
 
-font = pygame.font.Font(None, 36)
+
+display_font = pygame.font.Font("fonts/comic_book.ttf", 150)
 
 draw_tick_marks(45,315,14,160,240,200)
 
 
+# Test code
+if (test):
+	while 1:
+		for i in range(45,315):
+			pygame.draw.circle(screen, black, (160, 240), 200, 0)
+			draw_redline_arc(305,315,160,240,200)
+			draw_tick_marks(45,315,14,160,240,200)
+			draw_indicator(i,190,160,240)
 
-while 1:
-	for i in range(45,315):
-		pygame.draw.circle(screen, black, (160, 240), 200, 0)
-		draw_redline_arc(305,315,160,240,200)
-		draw_tick_marks(45,315,14,160,240,200)
-		draw_indicator(i,190,160,240)
+			pygame.draw.rect(screen, green, (400,20,300,190))
+			pygame.draw.rect(screen, green, (400,270,300,190))
 
-		pygame.display.update()
+			text = display_font.render(str(i)+u'\N{DEGREE SIGN}',1,white)
 
+			screen.blit(text,(420,40))
+
+			pygame.display.update()
+
+# Gets serial values and animates the dashboard
+if (not test):
+	while 1:
+		while (arduino.inWaiting() ==0):
+			pass
+		data = arduino.readLine()
 
 
 
