@@ -87,7 +87,7 @@ white = (255,255,255)
 
 pygame.init()
 
-font = pygame.font.Font("fonts/comic_book.ttf", 24)
+font = pygame.font.Font("fonts/monaco.ttf", 24)
 
 display_size=width, height=800,480 # Size of the Adafruit screen
 
@@ -99,9 +99,7 @@ screen.fill(grey)
 
 pygame.draw.circle(screen, black, (160, 240), 200, 0)
 
-
-
-display_font = pygame.font.Font("fonts/comic_book.ttf", 150)
+display_font = pygame.font.Font("fonts/monaco.ttf", 120)
 
 draw_tick_marks(45,315,14,160,240,200)
 
