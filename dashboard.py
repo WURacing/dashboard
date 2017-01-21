@@ -1,3 +1,5 @@
+# Authors: Michael Greer
+
 # IMPORTANT FOR CIRCLE DEFINITION:
 # We defined our unit circle as a mirror image of the standard unit circle.
 # Circle starts at left and goes clockwise
@@ -13,6 +15,7 @@ import pygame 			# Graphics and Drawing Module
 import serial			# Serial Library
 import time				# For delays
 import math				# sin, cos, etc
+import struct			# For converting byte to float
 
 # Is this a test or not
 test = True
@@ -76,6 +79,11 @@ def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
 	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
 
+# maps a variable from one space to another
+def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
+
+	return (input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart
+
 
 ############# Color Definitions
 red = 	(255,0,0)
@@ -103,6 +111,15 @@ display_font = pygame.font.Font("fonts/monaco.ttf", 120)
 
 draw_tick_marks(45,315,14,160,240,200)
 
+# Overarching state variables
+rpm = 0
+engineLoad = 0
+throttle = 0
+temp = 0
+speed = 0
+gear = 0
+
+
 
 # Test code
 if (test):
@@ -125,9 +142,71 @@ if (test):
 # Gets serial values and animates the dashboard
 if (not test):
 	while 1:
-		while (arduino.inWaiting() ==0):
+		while (arduino.inWaiting() == 0):		# Waits for new data
 			pass
-		data = arduino.readLine()
+		data = arduino.read()					# Reads next byte out of buffer
+
+		# Packet Headers:
+		# 0x30 : RPMs
+		# 0x31 : Engine Load
+		# 0x32 : throttle
+		# 0x33 : Coolant Temp (F)
+		# 0x34 : O2 level
+		# 0x35 : Vehicle Speed (The shitty one from the ECU anyway)
+		# 0x36 : Gear (Again, shitty ECU version)
+		# 0x37 : Battery Voltage
+		# 0x38 : Shock pot sensor on right rear wheel
+		# 0x39 : Shock pot sensor on left rear wheel
+
+		if (data == 0x30):		# RPM
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			rpm = payload
+		elif (data == 0x31):	# Engine Load
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			engineLoad = payload
+		elif (data == 0x32):	# Throttle
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			throttle = payload
+		elif (data == 0x33):	# Coolant Temp
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			temp = payload
+		elif (data == 0x35):	# Vehicle Speed
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			speed = payload
+		elif (data == 0x36):	# Gear
+			gear = int(arduino.read(1))
+			print (gear)
+		else:
+			print ("ERROR: Corrupted Data")
+
+		# Animate using new data
+		pygame.draw.circle(screen, black, (160, 240), 200, 0)
+		draw_redline_arc(305,315,160,240,200)
+		draw_tick_marks(45,315,14,160,240,200)
+		draw_indicator(linear_transform(rpm,0,13000,45,315),190,160,240)
+
+		pygame.draw.rect(screen, green, (400,20,300,190))
+		pygame.draw.rect(screen, green, (400,270,300,190))
+
+		text = display_font.render(u'\N{DEGREE SIGN}',1,white)
+
+		screen.blit(text,(420,40))
+
+		pygame.display.update()
+
+
+
+
+
+
+
+
+
 
 
 
