@@ -32,11 +32,11 @@ def draw_indicator(angle,length,center_x,center_y):
 
 	x_pos = center_x - x_len # Finds the x and y 
 	y_pos = center_y - y_len
+	
+	inner_x_pos = int(center_x-(.6*x_len))										# x coordinate of inside point
+	inner_y_pos = int(center_y-(.6*y_len))
 
-	pygame.draw.line(screen,red,(center_x,center_y),(x_pos,y_pos),4)
-
-	pygame.draw.circle(screen, red, (center_x,center_y), int(length/15))
-
+	pygame.draw.line(screen,red,(inner_x_pos,inner_y_pos),(x_pos,y_pos),10)
 
 # Draws tick marks along the outside of circles
 def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
@@ -82,6 +82,8 @@ def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
 #Draws all parts of display that are not data-dependent
 def draw_screen():
+
+#	Draw dial
 	pygame.draw.circle(screen, lgrey, (160, 240), 210, 0)
 	pygame.draw.circle(screen, black, (160, 240), 200, 0)
 	draw_redline_arc(305,315,160,240,200)
@@ -89,8 +91,9 @@ def draw_screen():
 	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
 	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
 	draw_tick_marks(45,315,14,160,240,200)
+# 	pygame.draw.rect(screen, green, (80,240,160,80))  RPM Font Box
 	
-	
+#	Draw rectangles
 	pygame.draw.rect(screen, lgrey, (440,10,320,210))
 	pygame.draw.rect(screen, green, (450,20,300,190))
 	pygame.draw.rect(screen, lgrey, (440,260,320,210))
@@ -100,7 +103,7 @@ def draw_screen():
 # maps a variable from one space to another
 def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
 
-	return (input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart
+	return int((input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart)
 
 
 ############# Color Definitions
@@ -128,6 +131,8 @@ pygame.draw.circle(screen, black, (160, 240), 200, 0)
 
 display_font = pygame.font.Font("fonts/monaco.ttf", 120)
 
+rpm_font = pygame.font.Font("fonts/monaco.ttf", 40)
+
 draw_tick_marks(45,315,14,160,240,200)
 
 # Overarching state variables
@@ -143,14 +148,18 @@ gear = 0
 # Test code
 if (test):
 	while 1:
-		for i in range(45,315):
+		for i in range(0,13000,50):
+			inpt = linear_transform(i,0,13000,45,315)
+			
 			draw_screen()
 
-			draw_indicator(i,190,160,240)
+			draw_indicator(inpt,190,160,240)
 
-			text = display_font.render(str(i)+u'\N{DEGREE SIGN}',1,white)
+			angle = display_font.render(str(inpt)+u'\N{DEGREE SIGN}',1,white)
+			rpm = rpm_font.render(str(i),1,white)
 
-			screen.blit(text,(470,40))
+			screen.blit(angle,(470,40))
+			screen.blit(rpm,(100,260))
 
 			pygame.display.update()
 
