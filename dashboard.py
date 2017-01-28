@@ -158,31 +158,34 @@ if (not test):
 		# 0x38 : Shock pot sensor on right rear wheel
 		# 0x39 : Shock pot sensor on left rear wheel
 
-		if (data == 0x30):		# RPM
-			payload = struct.unpack('f', arduino.read(4))
-			print (payload)
-			rpm = payload
-		elif (data == 0x31):	# Engine Load
-			payload = struct.unpack('f', arduino.read(4))
-			print (payload)
-			engineLoad = payload
-		elif (data == 0x32):	# Throttle
-			payload = struct.unpack('f', arduino.read(4))
-			print (payload)
-			throttle = payload
-		elif (data == 0x33):	# Coolant Temp
-			payload = struct.unpack('f', arduino.read(4))
-			print (payload)
-			temp = payload
-		elif (data == 0x35):	# Vehicle Speed
-			payload = struct.unpack('f', arduino.read(4))
-			print (payload)
-			speed = payload
-		elif (data == 0x36):	# Gear
-			gear = int(arduino.read(1))
-			print (gear)
-		else:
-			print ("ERROR: Corrupted Data")
+
+		if (data == 0x21):		# Magic Number
+			data = arduino.read()
+			if (data == 0x30):		# RPM
+				payload = struct.unpack('>f', arduino.read(4))
+				print (payload)
+				rpm = payload
+			elif (data == 0x31):	# Engine Load
+				payload = struct.unpack('>f', arduino.read(4))
+				print (payload)
+				engineLoad = payload
+			elif (data == 0x32):	# Throttle
+				payload = struct.unpack('>f', arduino.read(4))
+				print (payload)
+				throttle = payload
+			elif (data == 0x33):	# Coolant Temp
+				payload = struct.unpack('>f', arduino.read(4))
+				print (payload)
+				temp = payload
+			elif (data == 0x35):	# Vehicle Speed
+				payload = struct.unpack('>f', arduino.read(4))
+				print (payload)
+				speed = payload
+			elif (data == 0x36):	# Gear
+				gear = int(arduino.read(1))
+				print (gear)
+			else:
+				print ("ERROR: Corrupted Data")
 
 		# Animate using new data
 		pygame.draw.circle(screen, black, (160, 240), 200, 0)
@@ -193,7 +196,7 @@ if (not test):
 		pygame.draw.rect(screen, green, (400,20,300,190))
 		pygame.draw.rect(screen, green, (400,270,300,190))
 
-		text = display_font.render(u'\N{DEGREE SIGN}',1,white)
+		text = display_font.render(str(temp) + u'\N{DEGREE SIGN}',1,white)
 
 		screen.blit(text,(420,40))
 
