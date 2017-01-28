@@ -79,6 +79,24 @@ def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
 	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
 
+
+#Draws all parts of display that are not data-dependent
+def draw_screen():
+	pygame.draw.circle(screen, lgrey, (160, 240), 210, 0)
+	pygame.draw.circle(screen, black, (160, 240), 200, 0)
+	draw_redline_arc(305,315,160,240,200)
+	pygame.draw.rect(screen, lgrey, (0,100,20,280))
+	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
+	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
+	draw_tick_marks(45,315,14,160,240,200)
+	
+	
+	pygame.draw.rect(screen, lgrey, (440,10,320,210))
+	pygame.draw.rect(screen, green, (450,20,300,190))
+	pygame.draw.rect(screen, lgrey, (440,260,320,210))
+	pygame.draw.rect(screen, green, (450,270,300,190))
+	
+
 # maps a variable from one space to another
 def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
 
@@ -89,6 +107,7 @@ def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
 red = 	(255,0,0)
 black = (0,0,0)
 grey = 	(100,100,100)
+lgrey=	(150,150,150)
 green = (0,120,0)
 white = (255,255,255)
 ###############################
@@ -125,17 +144,13 @@ gear = 0
 if (test):
 	while 1:
 		for i in range(45,315):
-			pygame.draw.circle(screen, black, (160, 240), 200, 0)
-			draw_redline_arc(305,315,160,240,200)
-			draw_tick_marks(45,315,14,160,240,200)
-			draw_indicator(i,190,160,240)
+			draw_screen()
 
-			pygame.draw.rect(screen, green, (400,20,300,190))
-			pygame.draw.rect(screen, green, (400,270,300,190))
+			draw_indicator(i,190,160,240)
 
 			text = display_font.render(str(i)+u'\N{DEGREE SIGN}',1,white)
 
-			screen.blit(text,(420,40))
+			screen.blit(text,(470,40))
 
 			pygame.display.update()
 
@@ -188,17 +203,13 @@ if (not test):
 				print ("ERROR: Corrupted Data")
 
 		# Animate using new data
-		pygame.draw.circle(screen, black, (160, 240), 200, 0)
-		draw_redline_arc(305,315,160,240,200)
-		draw_tick_marks(45,315,14,160,240,200)
+		draw_screen()
+		
 		draw_indicator(linear_transform(rpm,0,13000,45,315),190,160,240)
-
-		pygame.draw.rect(screen, green, (400,20,300,190))
-		pygame.draw.rect(screen, green, (400,270,300,190))
 
 		text = display_font.render(str(temp) + u'\N{DEGREE SIGN}',1,white)
 
-		screen.blit(text,(420,40))
+		screen.blit(text,(470,40))
 
 		pygame.display.update()
 
