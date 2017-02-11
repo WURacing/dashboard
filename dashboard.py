@@ -113,6 +113,20 @@ grey = 	(100,100,100)
 lgrey=	(150,150,150)
 green = (0,120,0)
 white = (255,255,255)
+
+def rmpColor(n):
+	inpt = linear_transform(n,0,13000,0,255)
+	if (inpt < 100):
+		return (		250,					250,					250)
+	elif (inpt < 150):
+		return (		250-3*(inpt-100),		250-(inpt-100),		250-5*(inpt-100))
+	elif (inpt < 200):
+		return (		100+2*(inpt-150),		200,			0)
+	elif (inpt < 250):
+		return (		200+(inpt-200),		200-4*(inpt-200),		0)
+	else:
+		return (		250,					0,						0)
+	
 ###############################
 
 pygame.init()
@@ -156,10 +170,10 @@ if (test):
 			draw_indicator(inpt,190,160,240)
 
 			angle = display_font.render(str(inpt)+u'\N{DEGREE SIGN}',1,white)
-			rpm = rpm_font.render(str(i),1,white)
+			txtrpm = rpm_font.render(str(i),1,rmpColor(i))
 
 			screen.blit(angle,(470,40))
-			screen.blit(rpm,(100,260))
+			screen.blit(txtrpm,(100,260))
 
 			pygame.display.update()
 
