@@ -18,11 +18,11 @@ import math				# sin, cos, etc
 import struct			# For converting byte to float
 
 # Is this a test or not
-test = True
+test = False
 
 # Initialize serial
 if (not test): 
-	arduino = serial.Serial('/dev/ttyUSB0',9600)
+	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
 
 # Draws pointer on dials
 def draw_indicator(angle,length,center_x,center_y):
@@ -106,6 +106,76 @@ def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
 	return int((input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart)
 
 
+# All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
+def readData():
+	global ser
+	global rpm, engineLoad, throttle, temp, oxygen, speed, gear, volts
+	ser.flush()
+	if (ser.inWaiting() > 0):
+		data = ser.read()
+		if (data == bytes(b'!')):
+			data = ser.read()
+
+			# Packet Headers:
+			# 0x30 : RPMs
+			# 0x31 : Engine Load
+			# 0x32 : throttle
+			# 0x33 : Coolant Temp (F)
+			# 0x34 : O2 level
+			# 0x35 : Vehicle Speed (The shitty one from the ECU anyway)
+			# 0x36 : Gear (Again, shitty ECU version)
+			# 0x37 : Battery Voltage
+
+			if (data == bytes(b'0')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = struct.unpack('>f',ser.read(4))[0]
+				#print(payload)
+				rpm = payload
+
+			elif (data == bytes(b'1')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = struct.unpack('>f',ser.read(4))[0]
+				engineLoad = payload
+
+			elif (data == bytes(b'2')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = struct.unpack('>f',ser.read(4))[0]
+				throttle = payload
+
+			elif (data == bytes(b'3')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = struct.unpack('>f',ser.read(4))[0]
+				temp = payload
+
+			elif (data == bytes(b'4')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = struct.unpack('>f',ser.read(4))[0]
+				oxygen = payload
+
+			elif (data == bytes(b'5')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = struct.unpack('>f',ser.read(4))[0]
+				speed = payload
+
+			elif (data == bytes(b'6')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = int(list(ser.read())[0])
+				#print(payload)
+				gear = payload
+
+			elif (data == bytes(b'7')):
+				timestamp = struct.unpack('>I',ser.read(4))[0]
+				payload = struct.unpack('>f',ser.read(4))[0]
+				volts = payload
+
+			else:
+				print("ERROR: Corrupted Data")
+		else:
+			pass
+	else:
+		pass
+
+
 ############# Color Definitions
 red = 	(255,0,0)
 black = (0,0,0)
@@ -136,12 +206,16 @@ rpm_font = pygame.font.Font("fonts/monaco.ttf", 40)
 draw_tick_marks(45,315,14,160,240,200)
 
 # Overarching state variables
-rpm = 0
-engineLoad = 0
-throttle = 0
-temp = 0
-speed = 0
+rpm = 0.0
+engineLoad = 0.0
+throttle = 0.0
+temp = 0.0
+oxygen = 0.0
+speed = 0.0
 gear = 0
+volts = 0.0
+
+
 
 
 
@@ -165,51 +239,8 @@ if (test):
 
 # Gets serial values and animates the dashboard
 if (not test):
-	while 1:
-		while (arduino.inWaiting() == 0):		# Waits for new data
-			pass
-		data = arduino.read()					# Reads next byte out of buffer
-
-		# Packet Headers:
-		# 0x30 : RPMs
-		# 0x31 : Engine Load
-		# 0x32 : throttle
-		# 0x33 : Coolant Temp (F)
-		# 0x34 : O2 level
-		# 0x35 : Vehicle Speed (The shitty one from the ECU anyway)
-		# 0x36 : Gear (Again, shitty ECU version)
-		# 0x37 : Battery Voltage
-		# 0x38 : Shock pot sensor on right rear wheel
-		# 0x39 : Shock pot sensor on left rear wheel
-
-
-		if (data == 0x21):		# Magic Number
-			data = arduino.read()
-			if (data == 0x30):		# RPM
-				payload = struct.unpack('>f', arduino.read(4))
-				print (payload)
-				rpm = payload
-			elif (data == 0x31):	# Engine Load
-				payload = struct.unpack('>f', arduino.read(4))
-				print (payload)
-				engineLoad = payload
-			elif (data == 0x32):	# Throttle
-				payload = struct.unpack('>f', arduino.read(4))
-				print (payload)
-				throttle = payload
-			elif (data == 0x33):	# Coolant Temp
-				payload = struct.unpack('>f', arduino.read(4))
-				print (payload)
-				temp = payload
-			elif (data == 0x35):	# Vehicle Speed
-				payload = struct.unpack('>f', arduino.read(4))
-				print (payload)
-				speed = payload
-			elif (data == 0x36):	# Gear
-				gear = int(arduino.read(1))
-				print (gear)
-			else:
-				print ("ERROR: Corrupted Data")
+	
+	while (True):
 
 		# Animate using new data
 		draw_screen()
@@ -221,6 +252,10 @@ if (not test):
 		screen.blit(text,(470,40))
 
 		pygame.display.update()
+
+		readData()
+
+		print ("end of while loop")
 
 
 
