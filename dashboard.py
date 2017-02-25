@@ -100,7 +100,7 @@ def draw_screen():
 	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
 	draw_tick_marks(45,315,14,160,240,200)
 # 	pygame.draw.rect(screen, green, (80,240,160,80))  RPM Font Box
-	screen.blit(logo.image,logo.rect)
+#	screen.blit(logo.image,logo.rect)
 	
 #	Draw rectangles
 	pygame.draw.rect(screen, lgrey, (440,10,320,210))
@@ -281,7 +281,7 @@ if (not test):
 
 		readData()
 
-		print ("end of while loop")
+		#print ("end of while loop")
 
 
 
