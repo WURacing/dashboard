@@ -1,4 +1,4 @@
-# Authors: Michael Greer
+# Authors: Michael Greer, Matthew Shepherd
 
 # IMPORTANT FOR CIRCLE DEFINITION:
 # We defined our unit circle as a mirror image of the standard unit circle.
@@ -16,6 +16,8 @@ import serial			# Serial Library
 import time				# For delays
 import math				# sin, cos, etc
 import struct			# For converting byte to float
+
+import os
 
 # Is this a test or not
 test = False
@@ -79,8 +81,14 @@ def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
 	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
 
+# Logo Sprite BUG: Refuses to load an image as a sprite
+# logo = pygame.sprite.Sprite()
+# logo.image = pygame.Surface((100,100))
+# logo.image.fill((255,255,255))
+# logo.image.set_colorkey((0,0,0))
+# logo.rect = (100,100,100,100)
 
-#Draws all parts of display that are not data-dependent
+# Draws all parts of display that are not data-dependent
 def draw_screen():
 
 #	Draw dial
@@ -92,12 +100,16 @@ def draw_screen():
 	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
 	draw_tick_marks(45,315,14,160,240,200)
 # 	pygame.draw.rect(screen, green, (80,240,160,80))  RPM Font Box
+	screen.blit(logo.image,logo.rect)
 	
 #	Draw rectangles
 	pygame.draw.rect(screen, lgrey, (440,10,320,210))
 	pygame.draw.rect(screen, green, (450,20,300,190))
 	pygame.draw.rect(screen, lgrey, (440,260,320,210))
 	pygame.draw.rect(screen, green, (450,270,300,190))
+	
+#	Draw logo
+# 	screen.blit(logo.image,logo.rect)
 	
 
 # maps a variable from one space to another
@@ -183,6 +195,20 @@ grey = 	(100,100,100)
 lgrey=	(150,150,150)
 green = (0,120,0)
 white = (255,255,255)
+
+def rpmColor(n):
+	inpt = linear_transform(n,0,13000,0,255)
+	if (inpt < 100):
+		return (		250,					250,					250)
+	elif (inpt < 150):
+		return (		250-3*(inpt-100),		250-(inpt-100),		250-5*(inpt-100))
+	elif (inpt < 200):
+		return (		100+2*(inpt-150),		200-(inpt-150),			0)
+	elif (inpt < 250):
+		return (		200+(inpt-200),		150-3*(inpt-200),		0)
+	else:
+		return (		250,					0,						0)
+	
 ###############################
 
 pygame.init()
@@ -230,10 +256,10 @@ if (test):
 			draw_indicator(inpt,190,160,240)
 
 			angle = display_font.render(str(inpt)+u'\N{DEGREE SIGN}',1,white)
-			rpm = rpm_font.render(str(i),1,white)
+			txtrpm = rpm_font.render(str(i),1,rpmColor(i))
 
 			screen.blit(angle,(470,40))
-			screen.blit(rpm,(100,260))
+			screen.blit(txtrpm,(100,260))
 
 			pygame.display.update()
 
