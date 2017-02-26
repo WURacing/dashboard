@@ -187,10 +187,11 @@ def readData():
 	else:
 		pass
 
+# Smooths rpm readout
 def smooth_rpm():
 	global rpm, display_rpm
 
-	display_rpm += (rpm-display_rpm)/1.5
+	display_rpm += (rpm-display_rpm)/2
 
 
 ############# Color Definitions
@@ -218,13 +219,27 @@ def rpmColor(n):
 
 pygame.init()
 
-font = pygame.font.Font("fonts/monaco.ttf", 24)
-
 display_size=width, height=800,480 # Size of the Adafruit screen
 
 screen = pygame.display.set_mode(display_size)
 
-#pygame.display.toggle_fullscreen() # Sets display mode to full screen
+pygame.display.toggle_fullscreen() # Sets display mode to full screen
+
+# Display Logo
+
+img = pygame.image.load("WURacing-logo-big.png")
+
+img = pygame.transform.scale(img, (600,480))
+
+screen.fill(green)
+
+screen.blit(img, (100,0))
+
+pygame.display.flip()
+
+time.sleep(5)
+
+font = pygame.font.Font("fonts/monaco.ttf", 24)
 
 screen.fill(grey)
 
