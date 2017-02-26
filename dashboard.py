@@ -187,6 +187,11 @@ def readData():
 	else:
 		pass
 
+def smooth_rpm():
+	global rpm, display_rpm
+
+	display_rpm += (rpm-display_rpm)/1.5
+
 
 ############# Color Definitions
 red = 	(255,0,0)
@@ -233,6 +238,7 @@ draw_tick_marks(45,315,14,160,240,200)
 
 # Overarching state variables
 rpm = 0.0
+display_rpm = 0.0
 engineLoad = 0.0
 throttle = 0.0
 temp = 0.0
@@ -270,12 +276,17 @@ if (not test):
 
 		# Animate using new data
 		draw_screen()
+
+		smooth_rpm()
 		
-		draw_indicator(linear_transform(rpm,0,13000,45,315),190,160,240)
+		draw_indicator(linear_transform(display_rpm,0,13000,45,315),190,160,240)
 
 		text = display_font.render(str(temp) + u'\N{DEGREE SIGN}',1,white)
 
+		txtrpm = rpm_font.render(str(int(rpm)),1,rpmColor(rpm))
+
 		screen.blit(text,(470,40))
+		screen.blit(txtrpm,(100,220))
 
 		pygame.display.update()
 
