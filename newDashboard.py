@@ -101,8 +101,8 @@ def draw_screen():
 	pygame.draw.rect(screen, green, (475,225,250,150))
 	
 	# Temperature box
-	pygame.draw.rect(screen, lgrey, (50,200,300,200))
-	pygame.draw.rect(screen, green, (75,225,250,150))
+	pygame.draw.rect(screen, lgrey, (50,350,150,100))
+	pygame.draw.rect(screen, green, (65,365,120,70))
 	
 
 # maps a variable from one space to another
@@ -196,18 +196,28 @@ green = (0,120,0)
 white = (255,255,255)
 
 def rpmColor(n):
+	# inpt = linear_transform(n,0,13000,0,255)
+# 	if (inpt < 100):
+# 		return (		250,					250,					250)
+# 	elif (inpt < 150):
+# 		return (		250-3*(inpt-100),		250-(inpt-100),		250-5*(inpt-100))
+# 	elif (inpt < 200):
+# 		return (		100+2*(inpt-150),		200-(inpt-150),			0)
+# 	elif (inpt < 250):
+# 		return (		200+(inpt-200),		150-3*(inpt-200),		0)
+# 	else:
+# 		return (		250,					0,						0)
+	
 	inpt = linear_transform(n,0,13000,0,255)
 	if (inpt < 100):
-		return (		250,					250,					250)
-	elif (inpt < 150):
-		return (		250-3*(inpt-100),		250-(inpt-100),		250-5*(inpt-100))
+		return (		100+(inpt/2),			200-(inpt/2),			0)
 	elif (inpt < 200):
-		return (		100+2*(inpt-150),		200-(inpt-150),			0)
+		return (		150+((inpt-100)/2),		150-((inpt-100)),		0)
 	elif (inpt < 250):
-		return (		200+(inpt-200),		150-3*(inpt-200),		0)
+		return (		200+(inpt-200),			50-(inpt-200),			0)
 	else:
 		return (		250,					0,						0)
-	
+
 ###############################
 
 # Initialize pygame
@@ -230,7 +240,7 @@ pygame.display.flip()
 time.sleep(5)
 
 font = pygame.font.Font("fonts/monaco.ttf", 24)
-display_font = pygame.font.Font("fonts/monaco.ttf", 120)
+temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
 rpm_font = pygame.font.Font("fonts/monaco.ttf", 60)
 
 screen.fill(grey)
@@ -262,11 +272,16 @@ if (test):
 			draw_screen()
 			draw_rpm_bar(i)
 			
-			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
+# 			Readability RPM
+# 			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
+# 			screen.blit(txtrpm,(510,260))
+
+# 			Raw Input RPM
+			txtrpm = rpm_font.render(str(int(i)),1,white)
 			screen.blit(txtrpm,(510,260))
 			
-			txttemp = rpm_font.render((str(int(inptTemp)) + "º"),1,white)
-			screen.blit(txttemp,(140,260))
+			txttemp = temp_font.render((str(int(inptTemp)) + "º"),1,white)
+			screen.blit(txttemp,(80,375))
 			 
 			pygame.display.update()
 
