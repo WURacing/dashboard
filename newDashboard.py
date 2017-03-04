@@ -70,7 +70,6 @@ def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
 
 		screen.blit(num,(num_x_pos-5,num_y_pos-(num_height/2)))
 
-
 # Draws redline on outside of circle
 def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
@@ -81,35 +80,29 @@ def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
 	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
 
-# Logo Sprite BUG: Refuses to load an image as a sprite
-# logo = pygame.sprite.Sprite()
-# logo.image = pygame.Surface((100,100))
-# logo.image.fill((255,255,255))
-# logo.image.set_colorkey((0,0,0))
-# logo.rect = (100,100,100,100)
+# Draws the RPM bar at the top of the screen
+def draw_rpm_bar(i):
+	inpt = linear_transform(i,0,13000,0,800)
+	
+	for j in range(0,inpt):
+		colorInpt = linear_transform(j,0,800,0,13000)
+		pygame.draw.line(screen, rpmColor(colorInpt), (j,0), (j,100), 1)
+
 
 # Draws all parts of display that are not data-dependent
 def draw_screen():
-
-#	Draw dial
-	pygame.draw.circle(screen, lgrey, (160, 240), 210, 0)
-	pygame.draw.circle(screen, black, (160, 240), 200, 0)
-	draw_redline_arc(305,315,160,240,200)
-	pygame.draw.rect(screen, lgrey, (0,100,20,280))
-	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
-	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
-	draw_tick_marks(45,315,14,160,240,200)
-# 	pygame.draw.rect(screen, green, (80,240,160,80))  RPM Font Box
-#	screen.blit(logo.image,logo.rect)
+	screen.fill(grey)
 	
-#	Draw rectangles
-	pygame.draw.rect(screen, lgrey, (440,10,320,210))
-	pygame.draw.rect(screen, green, (450,20,300,190))
-	pygame.draw.rect(screen, lgrey, (440,260,320,210))
-	pygame.draw.rect(screen, green, (450,270,300,190))
+	#Bar line
+	pygame.draw.line(screen, lgrey, (0,100),(800,100), 5)
 	
-#	Draw logo
-# 	screen.blit(logo.image,logo.rect)
+	# RPM box
+	pygame.draw.rect(screen, lgrey, (450,200,300,200))
+	pygame.draw.rect(screen, green, (475,225,250,150))
+	
+	# Temperature box
+	pygame.draw.rect(screen, lgrey, (50,200,300,200))
+	pygame.draw.rect(screen, green, (75,225,250,150))
 	
 
 # maps a variable from one space to another
@@ -217,39 +210,33 @@ def rpmColor(n):
 	
 ###############################
 
+# Initialize pygame
 pygame.init()
 
+# Setup Screen
 display_size=width, height=800,480 # Size of the Adafruit screen
-
 screen = pygame.display.set_mode(display_size)
-
 pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
-# Display Logo
-
-# img = pygame.image.load(os.getcwd() + "/WURacing-Logo-Big.png")# 
-# 
+# # Display Logo
+# img = pygame.image.load("WURacing-Logo-Big.png")
 # img = pygame.transform.scale(img, (600,480))
+# screen.blit(img, (400,0))
 
 screen.fill(green)
-
-# screen.blit(img, (100,0))
 
 pygame.display.flip()
 
 time.sleep(5)
 
 font = pygame.font.Font("fonts/monaco.ttf", 24)
+display_font = pygame.font.Font("fonts/monaco.ttf", 120)
+rpm_font = pygame.font.Font("fonts/monaco.ttf", 60)
 
 screen.fill(grey)
 
-pygame.draw.circle(screen, black, (160, 240), 200, 0)
-
-display_font = pygame.font.Font("fonts/monaco.ttf", 120)
-
-rpm_font = pygame.font.Font("fonts/monaco.ttf", 40)
-
-draw_tick_marks(45,315,14,160,240,200)
+# pygame.draw.circle(screen, black, (160, 240), 200, 0)
+# draw_tick_marks(45,315,14,160,240,200)
 
 # Overarching state variables
 rpm = 0.0
@@ -270,26 +257,25 @@ volts = 0.0
 if (test):
 	while 1:
 		for i in range(0,13000,50):
-			inpt = linear_transform(i,0,13000,45,315)
-			
+			inpt = linear_transform(i,0,13000,0,800)
+			inptTemp = linear_transform(i,0,13000,45,315)
 			draw_screen()
-
-			draw_indicator(inpt,190,160,240)
-
-			angle = display_font.render(str(inpt)+u'\N{DEGREE SIGN}',1,white)
-			txtrpm = rpm_font.render(str(i),1,rpmColor(i))
-
-			screen.blit(angle,(470,40))
-			screen.blit(txtrpm,(100,260))
-
+			draw_rpm_bar(i)
+			
+			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
+			screen.blit(txtrpm,(510,260))
+			
+			txttemp = rpm_font.render((str(int(inptTemp)) + "º"),1,white)
+			screen.blit(txttemp,(140,260))
+			 
 			pygame.display.update()
 
 # Gets serial values and animates the dashboard
 if (not test):
 	
 	while (True):
-
-		# Animate using new data
+	
+#		Animate using new data
 		draw_screen()
 
 		smooth_rpm()
@@ -307,16 +293,4 @@ if (not test):
 
 		readData()
 
-		#print ("end of while loop")
-
-
-
-
-
-
-
-
-
-
-
-
+#		print ("end of while loop")
