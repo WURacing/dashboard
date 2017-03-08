@@ -229,9 +229,9 @@ screen = pygame.display.set_mode(display_size)
 pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
 # # Display Logo
-# img = pygame.image.load("WURacing-Logo-Big.png")
-# img = pygame.transform.scale(img, (600,480))
-# screen.blit(img, (400,0))
+#img = pygame.image.load("WURacing-Logo-Big.png")
+#img = pygame.transform.scale(img, (600,480))
+#screen.blit(img, (400,0))
 
 screen.fill(green)
 
