@@ -20,7 +20,7 @@ import struct			# For converting byte to float
 import os
 
 # Is this a test or not
-test = False
+test = True
 
 # Initialize serial
 if (not test): 
@@ -301,7 +301,7 @@ if (not test):
 		txtrpm = rpm_font.render(str(int(rpm)),1,rpmColor(rpm))
 
 		screen.blit(text,(470,40))
-		screen.blit(txtrpm,(100,220))
+		screen.blit(txtrpm,(100,100))
 
 		pygame.display.update()
 
