@@ -1,4 +1,4 @@
-# Authors: Michael Greer, Matthew Shepherd
+# Authors: Michael Greer
 
 # IMPORTANT FOR CIRCLE DEFINITION:
 # We defined our unit circle as a mirror image of the standard unit circle.
@@ -17,14 +17,12 @@ import time				# For delays
 import math				# sin, cos, etc
 import struct			# For converting byte to float
 
-import os
-
-# Is this a test or not
-test = False
+# Is this a test or not.
+test = True
 
 # Initialize serial
 if (not test): 
-	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
+	arduino = serial.Serial('/dev/ttyUSB0',9600)
 
 # Draws pointer on dials
 def draw_indicator(angle,length,center_x,center_y):
@@ -34,11 +32,11 @@ def draw_indicator(angle,length,center_x,center_y):
 
 	x_pos = center_x - x_len # Finds the x and y 
 	y_pos = center_y - y_len
-	
-	inner_x_pos = int(center_x-(.6*x_len))										# x coordinate of inside point
-	inner_y_pos = int(center_y-(.6*y_len))
 
-	pygame.draw.line(screen,red,(inner_x_pos,inner_y_pos),(x_pos,y_pos),10)
+	pygame.draw.line(screen,red,(center_x,center_y),(x_pos,y_pos),4)
+
+	pygame.draw.circle(screen, red, (center_x,center_y), int(length/15))
+
 
 # Draws tick marks along the outside of circles
 def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
@@ -81,233 +79,226 @@ def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
 
 	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
 
-# Logo Sprite BUG: Refuses to load an image as a sprite
-# logo = pygame.sprite.Sprite()
-# logo.image = pygame.Surface((100,100))
-# logo.image.fill((255,255,255))
-# logo.image.set_colorkey((0,0,0))
-# logo.rect = (100,100,100,100)
-
-# Draws all parts of display that are not data-dependent
-def draw_screen():
-
-#	Draw dial
-	pygame.draw.circle(screen, lgrey, (160, 240), 210, 0)
-	pygame.draw.circle(screen, black, (160, 240), 200, 0)
-	draw_redline_arc(305,315,160,240,200)
-	pygame.draw.rect(screen, lgrey, (0,100,20,280))
-	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
-	pygame.draw.ellipse(screen, black, (8, 100, 20, 280), 0)
-	draw_tick_marks(45,315,14,160,240,200)
-# 	pygame.draw.rect(screen, green, (80,240,160,80))  RPM Font Box
-#	screen.blit(logo.image,logo.rect)
-	
-#	Draw rectangles
-	pygame.draw.rect(screen, lgrey, (440,10,320,210))
-	pygame.draw.rect(screen, green, (450,20,300,190))
-	pygame.draw.rect(screen, lgrey, (440,260,320,210))
-	pygame.draw.rect(screen, green, (450,270,300,190))
-	
-#	Draw logo
-# 	screen.blit(logo.image,logo.rect)
-	
-
 # maps a variable from one space to another
 def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
 
 	return int((input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart)
 
+# Draw a warning message to the screen.
+def draw_warning_message(msg,primaryColor,secondaryColor):
 
-# All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
-def readData():
-	global ser
-	global rpm, engineLoad, throttle, temp, oxygen, speed, gear, volts
-	ser.flush()
-	if (ser.inWaiting() > 0):
-		data = ser.read()
-		if (data == bytes(b'!')):
-			data = ser.read()
+	#if you're using a different display resolution than 800x400, these constants must be changed 
+	warning_width = 600
+	warning_height = 300
+	base_x = 100 # x coord for upper left corner of warning
+	base_y = 100  # y coord for upper left corner of warning
 
-			# Packet Headers:
-			# 0x30 : RPMs
-			# 0x31 : Engine Load
-			# 0x32 : throttle
-			# 0x33 : Coolant Temp (F)
-			# 0x34 : O2 level
-			# 0x35 : Vehicle Speed (The shitty one from the ECU anyway)
-			# 0x36 : Gear (Again, shitty ECU version)
-			# 0x37 : Battery Voltage
+	pygame.draw.rect(screen, primaryColor, (base_x,base_y,warning_width,warning_height))
 
-			if (data == bytes(b'0')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				#print(payload)
-				rpm = payload
 
-			elif (data == bytes(b'1')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				engineLoad = payload
+	#draw the borders to the warning
+	line_width = 20
+	line_width_add = line_width/2.22 # additional amount to add to x or y when drawing lines to account for line width
+	pygame.draw.line(screen, secondaryColor, (base_x, base_y+line_width_add), (base_x+.25*warning_width, base_y+line_width_add), line_width)
+	pygame.draw.line(screen, secondaryColor, (base_x+line_width_add, base_y), (base_x+line_width_add, base_y+.25*warning_height), line_width)
+	#pygame.draw.line(screen, red, (150,75), (100,150), 20)
 
-			elif (data == bytes(b'2')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				throttle = payload
+	# pygame.draw.line(screen,white,(x_pos,y_pos),(inner_x_pos,inner_y_pos),6)
 
-			elif (data == bytes(b'3')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				temp = payload
-
-			elif (data == bytes(b'4')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				oxygen = payload
-
-			elif (data == bytes(b'5')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				speed = payload
-
-			elif (data == bytes(b'6')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = int(list(ser.read())[0])
-				#print(payload)
-				gear = payload
-
-			elif (data == bytes(b'7')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				volts = payload
-
-			else:
-				print("ERROR: Corrupted Data")
-		else:
-			pass
-	else:
-		pass
-
-# Smooths rpm readout
-def smooth_rpm():
-	global rpm, display_rpm
-
-	display_rpm += (rpm-display_rpm)/2
+# Draw the bar for displaying rpm
+def draw_rpm_bar(i):
+	inpt = linear_transform(i,0,13000,0,800)	
+	for j in range(0,inpt):
+		colorInpt = linear_transform(j,0,800,0,13000)
+		pygame.draw.line(screen, rpmColor(colorInpt), (j,0), (j,100), 1)
 
 
 ############# Color Definitions
-red = 	(255,0,0)
+red =   (255,0,0)
 black = (0,0,0)
 grey = 	(100,100,100)
-lgrey=	(150,150,150)
 green = (0,120,0)
 white = (255,255,255)
+###############################
+
+
+def rgbToHsl(r,g,b):
+	r /= float (255)
+	g /= float (255)
+	g /= float (255)
+
+	maxVal = max(r,g,b)
+	minVal = min(r,g,b)
+	l = (maxVal + minVal) / float (2)
+	s = None
+	h = None
+
+	if maxVal == minVal:
+		h = 0
+		s = 0
+	else:
+		temp = 0
+		if g < b:
+			temp = 6
+		else:
+			temp = 0
+
+		diff = maxVal - minVal
+		if s > .5:
+			s = diff / (2-maxVal-minVal)
+		else:
+			s = diff / (maxVal+minVal)
+		if maxVal == r:
+			h = (g - b)/diff + temp
+		elif maxVal == g:
+			h =  (b - r)/diff + 2
+		elif maxVal == b:
+			h = (r - g)/diff +4
+
+		h /=6
+	print(h)
+	print(s)
+	print(l)
+	return [h,s,l]
 
 def rpmColor(n):
 	inpt = linear_transform(n,0,13000,0,255)
 	if (inpt < 100):
-		return (		250,					250,					250)
-	elif (inpt < 150):
-		return (		250-3*(inpt-100),		250-(inpt-100),		250-5*(inpt-100))
+		return (		100+(inpt/2),			200-(inpt/2),			0)
 	elif (inpt < 200):
-		return (		100+2*(inpt-150),		200-(inpt-150),			0)
+		return (		150+((inpt-100)/2),		150-((inpt-100)),		0)
 	elif (inpt < 250):
-		return (		200+(inpt-200),		150-3*(inpt-200),		0)
+		return (		200+(inpt-200),			50-(inpt-200),			0)
 	else:
 		return (		250,					0,						0)
-	
+
 ###############################
 
+
+
+rgbToHsl(123,5,0)
 pygame.init()
+
+font = pygame.font.Font("fonts/OpenSans-Regular.ttf", 24)
 
 display_size=width, height=800,480 # Size of the Adafruit screen
 
 screen = pygame.display.set_mode(display_size)
 
-pygame.display.toggle_fullscreen() # Sets display mode to full screen
+if(not test):
+
+	pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
 # Display Logo
-
-img = pygame.image.load("WURacing-logo-big.png")
-
+img = pygame.image.load("WURacing-Logo-Big.png")
 img = pygame.transform.scale(img, (600,480))
-
-screen.fill(green)
-
 screen.blit(img, (100,0))
-
 pygame.display.flip()
+time.sleep(1)
 
-time.sleep(5)
 
-font = pygame.font.Font("fonts/monaco.ttf", 24)
+screen.fill(black)
 
-screen.fill(grey)
+#display_font = pygame.font.Font("fonts/monaco.ttf", 120)
+rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
 
-pygame.draw.circle(screen, black, (160, 240), 200, 0)
-
-display_font = pygame.font.Font("fonts/monaco.ttf", 120)
-
-rpm_font = pygame.font.Font("fonts/monaco.ttf", 40)
-
-draw_tick_marks(45,315,14,160,240,200)
 
 # Overarching state variables
-rpm = 0.0
-display_rpm = 0.0
-engineLoad = 0.0
-throttle = 0.0
-temp = 0.0
-oxygen = 0.0
-speed = 0.0
+rpm = 0
+engineLoad = 0
+throttle = 0
+temp = 0
+speed = 0
 gear = 0
-volts = 0.0
-
-
 
 
 
 # Test code
 if (test):
 	while 1:
-		for i in range(0,13000,50):
-			inpt = linear_transform(i,0,13000,45,315)
-			
-			draw_screen()
+		for i in range(0,13000):
+			screen.fill(black)
+			draw_rpm_bar(i)
+			#pygame.draw.circle(screen, black, (160, 240), 200, 0)
+			#draw_redline_arc(305,315,160,240,200)
+			#draw_tick_marks(45,315,14,160,240,200)
+			#draw_indicator(i,190,160,240)
 
-			draw_indicator(inpt,190,160,240)
+			#pygame.draw.rect(screen, green, (400,20,300,190))
+			#pygame.draw.rect(screen, green, (400,270,300,190))
 
-			angle = display_font.render(str(inpt)+u'\N{DEGREE SIGN}',1,white)
-			txtrpm = rpm_font.render(str(i),1,rpmColor(i))
 
-			screen.blit(angle,(470,40))
-			screen.blit(txtrpm,(100,260))
+			# if i>500:
+			# 	print("time to shift")
+			# 	draw_warning_message("test", white, red)
+
+			text = rpm_font.render(str(i),1,white)
+			#rpmText = rpm_font.render(str(i),white)
+
+
+			screen.blit(text,(280,180))
 
 			pygame.display.update()
 
 # Gets serial values and animates the dashboard
 if (not test):
-	
-	while (True):
+	while 1:
+		while (arduino.inWaiting() == 0):		# Waits for new data
+			pass
+		data = arduino.read()					# Reads next byte out of buffer
+
+		# Packet Headers:
+		# 0x30 : RPMs
+		# 0x31 : Engine Load
+		# 0x32 : throttle
+		# 0x33 : Coolant Temp (F)
+		# 0x34 : O2 level
+		# 0x35 : Vehicle Speed (The shitty one from the ECU anyway)
+		# 0x36 : Gear (Again, shitty ECU version)
+		# 0x37 : Battery Voltage
+		# 0x38 : Shock pot sensor on right rear wheel
+		# 0x39 : Shock pot sensor on left rear wheel
+
+		if (data == 0x30):		# RPM
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			rpm = payload
+		elif (data == 0x31):	# Engine Load
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			engineLoad = payload
+		elif (data == 0x32):	# Throttle
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			throttle = payload
+		elif (data == 0x33):	# Coolant Temp
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			temp = payload
+		elif (data == 0x35):	# Vehicle Speed
+			payload = struct.unpack('f', arduino.read(4))
+			print (payload)
+			speed = payload
+		elif (data == 0x36):	# Gear
+			gear = int(arduino.read(1))
+			print (gear)
+		else:
+			print ("ERROR: Corrupted Data")
 
 		# Animate using new data
-		draw_screen()
+		pygame.draw.circle(screen, black, (160, 240), 200, 0)
+		draw_redline_arc(305,315,160,240,200)
+		draw_tick_marks(45,315,14,160,240,200)
+		draw_indicator(linear_transform(rpm,0,13000,45,315),190,160,240)
 
-		smooth_rpm()
-		
-		draw_indicator(linear_transform(display_rpm,0,13000,45,315),190,160,240)
+		pygame.draw.rect(screen, green, (400,20,300,190))
+		pygame.draw.rect(screen, green, (400,270,300,190))
 
-		text = display_font.render(str(temp) + u'\N{DEGREE SIGN}',1,white)
+		text = display_font.render(u'\N{DEGREE SIGN}',1,white)
 
-		txtrpm = rpm_font.render(str(int(rpm)),1,rpmColor(rpm))
-
-		screen.blit(text,(470,40))
-		screen.blit(txtrpm,(100,220))
+		screen.blit(text,(420,40))
 
 		pygame.display.update()
-
-		readData()
-
-		#print ("end of while loop")
 
 
 
