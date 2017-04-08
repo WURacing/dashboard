@@ -16,6 +16,7 @@ import serial			# Serial Library
 import time				# For delays
 import math				# sin, cos, etc
 import struct			# For converting byte to float
+import datetime			# For delta timing
 
 import os
 
@@ -91,18 +92,18 @@ def draw_rpm_bar(i):
 
 # Draws all parts of display that are not data-dependent
 def draw_screen():
-	screen.fill(grey)
+	screen.fill(black)
 	
 	#Bar line
 	pygame.draw.line(screen, lgrey, (0,100),(800,100), 5)
 	
 	# RPM box
-	pygame.draw.rect(screen, lgrey, (450,200,300,200))
-	pygame.draw.rect(screen, green, (475,225,250,150))
+# 	pygame.draw.rect(screen, lgrey, (200,125,400,225))
+# 	pygame.draw.rect(screen, green, (225,150,350,175))
 	
 	# Temperature box
-	pygame.draw.rect(screen, lgrey, (50,350,150,100))
-	pygame.draw.rect(screen, green, (65,365,120,70))
+# 	pygame.draw.rect(screen, lgrey, (50,350,150,100))
+# 	pygame.draw.rect(screen, green, (65,365,120,70))
 	
 
 # maps a variable from one space to another
@@ -186,6 +187,16 @@ def smooth_rpm():
 
 	display_rpm += (rpm-display_rpm)/2
 
+def draw_warning_message(message, primary, secondary):
+	pygame.draw.rect(screen, primary, (25,125,750,325))
+	pygame.draw.rect(screen, secondary, (50,150,700,275))
+	if (message == "WARNING"):
+		warning = warning_font.render("WARNING",1,white)
+		screen.blit(warning,(135,175))
+		
+	else:
+		warning = warning_font.render("WARNING",1,white)
+		screen.blit(warning,(135,175))
 
 ############# Color Definitions
 red = 	(255,0,0)
@@ -196,7 +207,8 @@ green = (0,120,0)
 white = (255,255,255)
 
 def rpmColor(n):
-	# inpt = linear_transform(n,0,13000,0,255)
+# 	White to green to red
+# 	inpt = linear_transform(n,0,13000,0,255)
 # 	if (inpt < 100):
 # 		return (		250,					250,					250)
 # 	elif (inpt < 150):
@@ -208,15 +220,22 @@ def rpmColor(n):
 # 	else:
 # 		return (		250,					0,						0)
 	
-	inpt = linear_transform(n,0,13000,0,255)
-	if (inpt < 100):
-		return (		100+(inpt/2),			200-(inpt/2),			0)
-	elif (inpt < 200):
-		return (		150+((inpt-100)/2),		150-((inpt-100)),		0)
-	elif (inpt < 250):
-		return (		200+(inpt-200),			50-(inpt-200),			0)
-	else:
-		return (		250,					0,						0)
+# 	Green to Red
+# 	inpt = linear_transform(n,0,13000,0,255)
+# 	if (inpt < 100):
+# 		return (		100+(inpt/2),			200-(inpt/2),			0)
+# 	elif (inpt < 200):
+# 		return (		150+((inpt-100)/2),		150-((inpt-100)),		0)
+# 	elif (inpt < 250):
+# 		return (		200+(inpt-200),			50-(inpt-200),			0)
+# 	else:
+# 		return (		250,					0,						0)
+	
+# 	HSLA formatting	
+	inpt = linear_transform(n,0,13000,100,0)
+	color = pygame.Color(255)
+	color.hsla = (inpt,100,50,0)
+	return color
 
 ###############################
 
@@ -241,7 +260,8 @@ time.sleep(5)
 
 font = pygame.font.Font("fonts/monaco.ttf", 24)
 temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
-rpm_font = pygame.font.Font("fonts/monaco.ttf", 60)
+rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
+warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
 
 screen.fill(grey)
 
@@ -265,6 +285,10 @@ volts = 0.0
 
 # Test code
 if (test):
+
+	warning_state = True
+	previousTime = datetime.datetime.now()
+	
 	while 1:
 		for i in range(0,13000,50):
 			inpt = linear_transform(i,0,13000,0,800)
@@ -278,10 +302,34 @@ if (test):
 
 # 			Raw Input RPM
 			txtrpm = rpm_font.render(str(int(i)),1,white)
-			screen.blit(txtrpm,(510,260))
+			if (i < 100):
+				screen.blit(txtrpm,(355,180))
+			elif (i < 1000):
+				screen.blit(txtrpm,(320,180))
+			elif (i < 10000):
+				screen.blit(txtrpm,(285,180))
+			else:
+				screen.blit(txtrpm,(250,180))
 			
 			txttemp = temp_font.render((str(int(inptTemp)) + "º"),1,white)
 			screen.blit(txttemp,(80,375))
+			
+			currentTime = datetime.datetime.now()
+			deltaTime = currentTime - previousTime
+			
+# 			Flashes the warning message
+			if (deltaTime.microseconds > 500000):
+				if (warning_state):
+# 					Draw
+					warning_state = False
+					previousTime = datetime.datetime.now()
+				else:
+# 					Don't Draw
+					warning_state = True
+					previousTime = datetime.datetime.now()
+					
+			if (warning_state):
+				draw_warning_message("WARNING",red,black)
 			 
 			pygame.display.update()
 
