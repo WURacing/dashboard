@@ -22,13 +22,20 @@ import os				# For testing?
 
 
 
-#####	Setup and Variable Declarations	  #####
+#####	Initialize Libraries and Variable Declarations	  #####
 
-### Testing Mode or Reading Rode
+### Initialize pygame
+pygame.init()
+
+### Initialize as Testing Mode or Reading Rode
 # True => Testing
 # False => Reading
 test = True
-	
+
+### Initialize serial
+if (not test): 
+	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
+
 ### [Overarching State Variable] Declarations
 rpm = 0.0
 display_rpm = 0.0
@@ -44,10 +51,6 @@ volts = 0.0
 temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
 rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
 warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
-
-### Initialize Serial
-if (not test): 
-	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
 
 
 
@@ -244,9 +247,6 @@ def rpmColor(n):
 
 
 #####	MAIN CODE	#####
-
-# Initialize pygame
-pygame.init()
 
 # Setup Screen
 display_size=width, height=800,480 # Size of the Adafruit screen
