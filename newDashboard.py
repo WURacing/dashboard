@@ -9,7 +9,7 @@
 
 # -*- coding: utf-8 -*-
 
-# Import statements
+#####	Import statements	#####
 
 import pygame 			# Graphics and Drawing Module
 import serial			# Serial Library
@@ -17,71 +17,48 @@ import time				# For delays
 import math				# sin, cos, etc
 import struct			# For converting byte to float
 import datetime			# For delta timing
+import os				# For testing?
 
-import os
 
-# Is this a test or not
+
+
+#####	Setup and Variable Declarations	  #####
+
+### Testing Mode or Reading Rode
+# True => Testing
+# False => Reading
 test = True
+	
+### [Overarching State Variable] Declarations
+rpm = 0.0
+display_rpm = 0.0
+engineLoad = 0.0
+throttle = 0.0
+temp = 0.0
+oxygen = 0.0
+speed = 0.0
+gear = 0
+volts = 0.0
 
-# Initialize serial
+### Font Declarations
+temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
+rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
+warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
+
+### Initialize Serial
 if (not test): 
 	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
 
-# Draws pointer on dials
-def draw_indicator(angle,length,center_x,center_y):
 
-	x_len = math.cos(math.radians(angle))*float(length) # Finds the x and y compoents of the length
-	y_len = math.sin(math.radians(angle))*float(length) 
 
-	x_pos = center_x - x_len # Finds the x and y 
-	y_pos = center_y - y_len
-	
-	inner_x_pos = int(center_x-(.6*x_len))										# x coordinate of inside point
-	inner_y_pos = int(center_y-(.6*y_len))
 
-	pygame.draw.line(screen,red,(inner_x_pos,inner_y_pos),(x_pos,y_pos),10)
+##### Function Definitions #####
 
-# Draws tick marks along the outside of circles
-def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
+### Maps a variable from one space to another
+def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
+	return int((input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart)
 
-	angle_diff = stopAngle-startAngle												# Value of the difference between the start and stop angles
-	spacing = float(angle_diff)/float(numMarks-1)									# Angle spacing between each mark
-
-	for mark in range(numMarks): 													# Loops through each tick mark
-		current_angle=startAngle+(spacing*float(mark))								# Current angle for this tick mark
-		y_len = math.sin(math.radians(current_angle))*radius						# y component of length
-		x_len = math.cos(math.radians(current_angle))*radius						# x component of length
-
-		x_pos = int(center_x - x_len)												# x coordinate of outside point
-		y_pos = int(center_y - y_len)												# y coordinate of outside point
-
-		inner_x_pos = int(center_x-(.9*x_len))										# x coordinate of inside point
-		inner_y_pos = int(center_y-(.9*y_len))										# y coordinate of inside point
-
-		num_x_pos = int(center_x-(.8*x_len))
-		num_y_pos = int(center_y-(.8*y_len))
-
-		#print x_pos, y_pos, inner_x_pos, inner_y_pos								# debug
-
-		pygame.draw.line(screen,white,(x_pos,y_pos),(inner_x_pos,inner_y_pos),6)	# draws tick mark
-
-		num = font.render(str(mark),1,white)
-
-		(num_width,num_height) = font.size(str(num))
-
-		screen.blit(num,(num_x_pos-5,num_y_pos-(num_height/2)))
-
-# Draws redline on outside of circle
-def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
-
-	rect = (center_x-radius,center_y-radius,2*radius,2*radius)		# Defines the rectangle to draw arc in
-
-	start_radians = math.radians((-stopAngle)+180)					# Converts between our "unit circle" and standard unic circle
-	stop_radians = math.radians((-startAngle)+180)
-
-	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
-
-# Draws the RPM bar at the top of the screen
+### Draws the RPM bar at the top of the screen
 def draw_rpm_bar(i):
 	inpt = linear_transform(i,0,13000,0,800)
 	
@@ -90,28 +67,32 @@ def draw_rpm_bar(i):
 		pygame.draw.line(screen, rpmColor(colorInpt), (j,0), (j,100), 1)
 
 
-# Draws all parts of display that are not data-dependent
+### Draws all parts of display that are not data-dependent
 def draw_screen():
 	screen.fill(black)
 	
 	#Bar line
 	pygame.draw.line(screen, lgrey, (0,100),(800,100), 5)
+
+### Smooths rpm readout
+def smooth_rpm():
+	global rpm, display_rpm
 	
-	# RPM box
-# 	pygame.draw.rect(screen, lgrey, (200,125,400,225))
-# 	pygame.draw.rect(screen, green, (225,150,350,175))
-	
-	# Temperature box
-# 	pygame.draw.rect(screen, lgrey, (50,350,150,100))
-# 	pygame.draw.rect(screen, green, (65,365,120,70))
-	
+	display_rpm += (rpm-display_rpm)/2
 
-# maps a variable from one space to another
-def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
+### Draws the warning message for flashing warnings on the dashboard
+def draw_warning_message(message, primary, secondary):
+	pygame.draw.rect(screen, primary, (25,125,750,325))
+	pygame.draw.rect(screen, secondary, (50,150,700,275))
+	if (message == "test"):
+		warning = warning_font.render("WARNING",1,white)
+		screen.blit(warning,(135,175))
+		
+	else:
+		warning = warning_font.render("Hello!",1,white)
+		screen.blit(warning,(135,175))
 
-	return int((input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart)
-
-
+### Reads data from bus
 # All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
 def readData():
 	global ser
@@ -181,24 +162,69 @@ def readData():
 	else:
 		pass
 
-# Smooths rpm readout
-def smooth_rpm():
-	global rpm, display_rpm
+### OBSOLETE ####
 
-	display_rpm += (rpm-display_rpm)/2
+# # Draws pointer on dials
+# def draw_indicator(angle,length,center_x,center_y):
+# 
+# 	x_len = math.cos(math.radians(angle))*float(length) # Finds the x and y compoents of the length
+# 	y_len = math.sin(math.radians(angle))*float(length) 
+# 
+# 	x_pos = center_x - x_len # Finds the x and y 
+# 	y_pos = center_y - y_len
+# 	
+# 	inner_x_pos = int(center_x-(.6*x_len))										# x coordinate of inside point
+# 	inner_y_pos = int(center_y-(.6*y_len))
+# 
+# 	pygame.draw.line(screen,red,(inner_x_pos,inner_y_pos),(x_pos,y_pos),10)
+# 
+# # Draws tick marks along the outside of circles
+# def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
+# 
+# 	angle_diff = stopAngle-startAngle												# Value of the difference between the start and stop angles
+# 	spacing = float(angle_diff)/float(numMarks-1)									# Angle spacing between each mark
+# 
+# 	for mark in range(numMarks): 													# Loops through each tick mark
+# 		current_angle=startAngle+(spacing*float(mark))								# Current angle for this tick mark
+# 		y_len = math.sin(math.radians(current_angle))*radius						# y component of length
+# 		x_len = math.cos(math.radians(current_angle))*radius						# x component of length
+# 
+# 		x_pos = int(center_x - x_len)												# x coordinate of outside point
+# 		y_pos = int(center_y - y_len)												# y coordinate of outside point
+# 
+# 		inner_x_pos = int(center_x-(.9*x_len))										# x coordinate of inside point
+# 		inner_y_pos = int(center_y-(.9*y_len))										# y coordinate of inside point
+# 
+# 		num_x_pos = int(center_x-(.8*x_len))
+# 		num_y_pos = int(center_y-(.8*y_len))
+# 
+# 		#print x_pos, y_pos, inner_x_pos, inner_y_pos								# debug
+# 
+# 		pygame.draw.line(screen,white,(x_pos,y_pos),(inner_x_pos,inner_y_pos),6)	# draws tick mark
+# 
+# 		num = font.render(str(mark),1,white)
+# 
+# 		(num_width,num_height) = font.size(str(num))
+# 
+# 		screen.blit(num,(num_x_pos-5,num_y_pos-(num_height/2)))
+# 
+# # Draws redline on outside of circle
+# def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
+# 
+# 	rect = (center_x-radius,center_y-radius,2*radius,2*radius)		# Defines the rectangle to draw arc in
+# 
+# 	start_radians = math.radians((-stopAngle)+180)					# Converts between our "unit circle" and standard unic circle
+# 	stop_radians = math.radians((-startAngle)+180)
+# 
+# 	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
+#
 
-def draw_warning_message(message, primary, secondary):
-	pygame.draw.rect(screen, primary, (25,125,750,325))
-	pygame.draw.rect(screen, secondary, (50,150,700,275))
-	if (message == "WARNING"):
-		warning = warning_font.render("WARNING",1,white)
-		screen.blit(warning,(135,175))
-		
-	else:
-		warning = warning_font.render("WARNING",1,white)
-		screen.blit(warning,(135,175))
+#### END OBSOLETE ####
 
-############# Color Definitions
+
+
+
+######	Color Definitions	######
 red = 	(255,0,0)
 black = (0,0,0)
 grey = 	(100,100,100)
@@ -206,38 +232,18 @@ lgrey=	(150,150,150)
 green = (0,120,0)
 white = (255,255,255)
 
+#Returns the color of the RPM bar depending on the RPM
 def rpmColor(n):
-# 	White to green to red
-# 	inpt = linear_transform(n,0,13000,0,255)
-# 	if (inpt < 100):
-# 		return (		250,					250,					250)
-# 	elif (inpt < 150):
-# 		return (		250-3*(inpt-100),		250-(inpt-100),		250-5*(inpt-100))
-# 	elif (inpt < 200):
-# 		return (		100+2*(inpt-150),		200-(inpt-150),			0)
-# 	elif (inpt < 250):
-# 		return (		200+(inpt-200),		150-3*(inpt-200),		0)
-# 	else:
-# 		return (		250,					0,						0)
-	
-# 	Green to Red
-# 	inpt = linear_transform(n,0,13000,0,255)
-# 	if (inpt < 100):
-# 		return (		100+(inpt/2),			200-(inpt/2),			0)
-# 	elif (inpt < 200):
-# 		return (		150+((inpt-100)/2),		150-((inpt-100)),		0)
-# 	elif (inpt < 250):
-# 		return (		200+(inpt-200),			50-(inpt-200),			0)
-# 	else:
-# 		return (		250,					0,						0)
-	
-# 	HSLA formatting	
+	# HSLA formatting	
 	inpt = linear_transform(n,0,13000,100,0)
 	color = pygame.Color(255)
 	color.hsla = (inpt,100,50,0)
 	return color
 
-###############################
+
+
+
+#####	MAIN CODE	#####
 
 # Initialize pygame
 pygame.init()
@@ -247,45 +253,24 @@ display_size=width, height=800,480 # Size of the Adafruit screen
 screen = pygame.display.set_mode(display_size)
 pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
-# # Display Logo
+# More Screen Setup (I dunno what this does? artifact from old code?)
+screen.fill(green)
+pygame.display.flip()
+time.sleep(5)
+
+# Final Screen Serup
+screen.fill(grey)
+
+# Display Logo (doesn't work on my laptop for some reason; uncomment to display)
 #img = pygame.image.load("WURacing-Logo-Big.png")
 #img = pygame.transform.scale(img, (600,480))
 #screen.blit(img, (400,0))
 
-screen.fill(green)
 
-pygame.display.flip()
-
-time.sleep(5)
-
-font = pygame.font.Font("fonts/monaco.ttf", 24)
-temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
-rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
-warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
-
-screen.fill(grey)
-
-# pygame.draw.circle(screen, black, (160, 240), 200, 0)
-# draw_tick_marks(45,315,14,160,240,200)
-
-# Overarching state variables
-rpm = 0.0
-display_rpm = 0.0
-engineLoad = 0.0
-throttle = 0.0
-temp = 0.0
-oxygen = 0.0
-speed = 0.0
-gear = 0
-volts = 0.0
-
-
-
-
-
-# Test code
+###		Testing Mode	 ###
 if (test):
 
+# 	Setup for warning delta timing
 	warning_state = True
 	previousTime = datetime.datetime.now()
 	
@@ -296,12 +281,13 @@ if (test):
 			draw_screen()
 			draw_rpm_bar(i)
 			
-# 			Readability RPM
-# 			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
-# 			screen.blit(txtrpm,(510,260))
-
-# 			Raw Input RPM
+# 			Get Raw Input RPM
 			txtrpm = rpm_font.render(str(int(i)),1,white)
+			
+# 			Readability RPM (I prefer this formatting; replace line above to implement
+# 			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
+
+# 			Draw Raw Input RPM (Always text-centered)
 			if (i < 100):
 				screen.blit(txtrpm,(355,180))
 			elif (i < 1000):
@@ -311,28 +297,36 @@ if (test):
 			else:
 				screen.blit(txtrpm,(250,180))
 			
+# 			Draw Temperature
 			txttemp = temp_font.render((str(int(inptTemp)) + "º"),1,white)
 			screen.blit(txttemp,(80,375))
 			
+# 			Delta Timing for warning message
 			currentTime = datetime.datetime.now()
 			deltaTime = currentTime - previousTime
 			
-# 			Flashes the warning message
+			
+###			Warning Message Code
+	
+# 			Flashing Message State Machine
 			if (deltaTime.microseconds > 500000):
 				if (warning_state):
-# 					Draw
+					# Draw State
 					warning_state = False
 					previousTime = datetime.datetime.now()
 				else:
-# 					Don't Draw
+ 					# Don't Draw State
 					warning_state = True
 					previousTime = datetime.datetime.now()
-					
+			
+# 			Draw/Don't Draw depending on state
 			if (warning_state):
-				draw_warning_message("WARNING",red,black)
+				draw_warning_message("test",red,grey)
 			 
 			pygame.display.update()
 
+
+###		Reading Mode	 ###
 # Gets serial values and animates the dashboard
 if (not test):
 	
