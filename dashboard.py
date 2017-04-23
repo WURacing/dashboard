@@ -20,11 +20,11 @@ import struct			# For converting byte to float
 import os
 
 # Is this a test or not
-test = True
+test = False
 
 # Initialize serial
 if (not test): 
-	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
+	ser = serial.Serial('/dev/ttyUSB0',9600)
 
 # Draws pointer on dials
 def draw_indicator(angle,length,center_x,center_y):
@@ -223,7 +223,7 @@ display_size=width, height=800,480 # Size of the Adafruit screen
 
 screen = pygame.display.set_mode(display_size)
 
-pygame.display.toggle_fullscreen() # Sets display mode to full screen
+#pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
 # Display Logo
 
