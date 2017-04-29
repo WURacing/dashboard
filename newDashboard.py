@@ -20,6 +20,8 @@ import datetime			# For delta timing
 import os				# For testing?
 from subprocess import call 	#Used for calling external functions
 
+from serial_ports import serial_ports
+
 #####	Initialize Libraries and Variable Declarations	  #####
 
 ### Initialize pygame
@@ -28,11 +30,17 @@ pygame.init()
 ### Initialize as Testing Mode or Reading Rode
 # True => Testing
 # False => Reading
-test = True
+test = False
 
 ### Initialize serial
+ser = None
 if (not test): 
-	ser = serial.Serial('/dev/ttyACM0',9600)
+	while ser is None:
+		ports = serial_ports()
+		if ports != []:
+			ser = serial.Serial(ports[0], 9600)
+		else:
+			time.sleep(1)
 
 ### [Overarching State Variable] Declarations
 rpm = 0.0
@@ -46,11 +54,11 @@ gear = 0
 volts = 0.0 	# This is actually a running average of the voltage across 20 elements
 
 buf_length = 50
-volt_buf = [13] * buf_length;
-buf_count = 0;
+volt_buf = [13] * buf_length
+buf_count = 0
 buf_sum = sum(volt_buf)
 
-shutoff = False;
+shutoff = False
 
 ### Font Declarations
 temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
@@ -94,21 +102,11 @@ def smooth_rpm():
 
 ### Draws the warning message for flashing warnings on the dashboard
 def draw_warning_message(message, primary, secondary):
-	pygame.draw.rect(screen, primary, (25,125,750,325))
-	pygame.draw.rect(screen, secondary, (50,150,700,275))
-
-###	This wasn't really doing what it was mean to 
-
-	# if (message == "test"):
-	# 	warning = warning_font.render("WARNING",1,white)
-	# 	screen.blit(warning,(135,175))
-		
-	# else:
-	# 	warning = warning_font.render("Hello!",1,white)
-	# 	screen.blit(warning,(135,175))
+	pygame.draw.rect(screen, primary, (25,25,750,425))
+	pygame.draw.rect(screen, secondary, (50,50,700,375))
 
 	warning = warning_font.render(message,1,white)
-	screen.blit(warning, (135,175));
+	screen.blit(warning, (135,175))
 
 ### Reads data from bus
 # All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
@@ -161,7 +159,6 @@ def readData():
 				payload = struct.unpack('>f',ser.read(4))[0]
 				voltageUpdate(payload)
 
-
 			else:
 				print("ERROR: Corrupted Data")
 		else:
@@ -171,16 +168,21 @@ def readData():
 
 # Used to turn off the RPi when the battery voltage gets critically low
 def lowBatteryShutoff():
-	shutoff = True;
+	global shutoff
+	shutoff = True
 	call(["shutdown"])	# Executes the shutdown function
 
 def voltageUpdate(vInput):
+
+	global buf_count
+	global buf_sum
+	global volt_buf
 
 	buf_count %= buf_length
 
 	buf_sum -= volt_buf[buf_count]
 
-	volt_buf[buf_count] = vInput;
+	volt_buf[buf_count] = vInput
 
 	buf_sum += volt_buf[buf_count]
 
@@ -191,69 +193,6 @@ def voltageUpdate(vInput):
 	if (volts < low_battery):
 
 		lowBatteryShutoff()
-
-
-### OBSOLETE ####
-
-# # Draws pointer on dials
-# def draw_indicator(angle,length,center_x,center_y):
-# 
-# 	x_len = math.cos(math.radians(angle))*float(length) # Finds the x and y compoents of the length
-# 	y_len = math.sin(math.radians(angle))*float(length) 
-# 
-# 	x_pos = center_x - x_len # Finds the x and y 
-# 	y_pos = center_y - y_len
-# 	
-# 	inner_x_pos = int(center_x-(.6*x_len))										# x coordinate of inside point
-# 	inner_y_pos = int(center_y-(.6*y_len))
-# 
-# 	pygame.draw.line(screen,red,(inner_x_pos,inner_y_pos),(x_pos,y_pos),10)
-# 
-# # Draws tick marks along the outside of circles
-# def draw_tick_marks(startAngle,stopAngle,numMarks,center_x,center_y,radius):
-# 
-# 	angle_diff = stopAngle-startAngle												# Value of the difference between the start and stop angles
-# 	spacing = float(angle_diff)/float(numMarks-1)									# Angle spacing between each mark
-# 
-# 	for mark in range(numMarks): 													# Loops through each tick mark
-# 		current_angle=startAngle+(spacing*float(mark))								# Current angle for this tick mark
-# 		y_len = math.sin(math.radians(current_angle))*radius						# y component of length
-# 		x_len = math.cos(math.radians(current_angle))*radius						# x component of length
-# 
-# 		x_pos = int(center_x - x_len)												# x coordinate of outside point
-# 		y_pos = int(center_y - y_len)												# y coordinate of outside point
-# 
-# 		inner_x_pos = int(center_x-(.9*x_len))										# x coordinate of inside point
-# 		inner_y_pos = int(center_y-(.9*y_len))										# y coordinate of inside point
-# 
-# 		num_x_pos = int(center_x-(.8*x_len))
-# 		num_y_pos = int(center_y-(.8*y_len))
-# 
-# 		#print x_pos, y_pos, inner_x_pos, inner_y_pos								# debug
-# 
-# 		pygame.draw.line(screen,white,(x_pos,y_pos),(inner_x_pos,inner_y_pos),6)	# draws tick mark
-# 
-# 		num = font.render(str(mark),1,white)
-# 
-# 		(num_width,num_height) = font.size(str(num))
-# 
-# 		screen.blit(num,(num_x_pos-5,num_y_pos-(num_height/2)))
-# 
-# # Draws redline on outside of circle
-# def draw_redline_arc(startAngle,stopAngle,center_x,center_y,radius):
-# 
-# 	rect = (center_x-radius,center_y-radius,2*radius,2*radius)		# Defines the rectangle to draw arc in
-# 
-# 	start_radians = math.radians((-stopAngle)+180)					# Converts between our "unit circle" and standard unic circle
-# 	stop_radians = math.radians((-startAngle)+180)
-# 
-# 	pygame.draw.arc(screen,red,rect,start_radians,stop_radians,10)	# Draws Arc
-#
-
-#### END OBSOLETE ####
-
-
-
 
 ######	Color Definitions	######
 red = 	(255,0,0)
@@ -364,40 +303,12 @@ if (not test):
 	while (True):
 
 		draw_screen()
-		draw_rpm_bar(rpm)
 
-#			Check for warnings
-		redline = rpm > redline_rpm
-		shift 	= rpm > shift_rpm
-		overheat= temp > high_temp
+###			Warning Message Code
 
-		
-# 			Get Raw Input RPM
-		txtrpm = rpm_font.render(str(int(rpm)),1,white)
-		
-# 			Readability RPM (I prefer this formatting; replace line above to implement
-# 			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
-
-# 			Draw Raw Input RPM (Always text-centered)
-		if (rpm < 100):
-			screen.blit(txtrpm,(355,180))
-		elif (rpm < 1000):
-			screen.blit(txtrpm,(320,180))
-		elif (rpm < 10000):
-			screen.blit(txtrpm,(285,180))
-		else:
-			screen.blit(txtrpm,(250,180))
-		
-# 			Draw Temperature
-		txttemp = temp_font.render((str(int(temp)) + "\xb0"),1,white)
-		screen.blit(txttemp,(80,375))
-		
 # 			Delta Timing for warning message
 		currentTime = datetime.datetime.now()
 		deltaTime = currentTime - previousTime
-		
-		
-###			Warning Message Code
 
 # 			Flashing Message State Machine
 		if (deltaTime.microseconds > 500000):
@@ -409,8 +320,12 @@ if (not test):
 					# Don't Draw State
 				warning_state = True
 				previousTime = datetime.datetime.now()
-		
-# 			Draw/Don't Draw depending on state
+
+		#			Check for warnings
+		redline = rpm > redline_rpm
+		shift 	= rpm > shift_rpm
+		overheat= temp > high_temp
+
 		if (warning_state and shutoff):
 			draw_warning_message("SHUTOFF",red,grey)
 		elif (warning_state and redline):
@@ -419,6 +334,31 @@ if (not test):
 			draw_warning_message("OVERHEAT",red,grey)
 		elif (warning_state and shift):
 			draw_warning_message("SHIFT",green,grey)
+		else:
+
+			draw_rpm_bar(rpm)
+			
+	# 			Get Raw Input RPM
+			txtrpm = rpm_font.render(str(int(rpm)),1,white)
+			
+	# 			Readability RPM (I prefer this formatting; replace line above to implement
+	# 			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
+
+	# 			Draw Raw Input RPM (Always text-centered)
+			if (rpm < 100):
+				screen.blit(txtrpm,(355,180))
+			elif (rpm < 1000):
+				screen.blit(txtrpm,(320,180))
+			elif (rpm < 10000):
+				screen.blit(txtrpm,(285,180))
+			else:
+				screen.blit(txtrpm,(250,180))
+			
+	# 			Draw Temperature
+			txttemp = temp_font.render((str(int(temp)) + "\xb0"),1,white)
+			screen.blit(txttemp,(80,375))
+			
+	# 			Draw/Don't Draw depending on state
 		 
 		pygame.display.update()
 
