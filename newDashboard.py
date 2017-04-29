@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Authors: Michael Greer, Matthew Shepherd
 
 # IMPORTANT FOR CIRCLE DEFINITION:
@@ -6,8 +8,6 @@
 # Code reflects this
 
 ###############################################################################################################
-
-# -*- coding: utf-8 -*-
 
 #####	Import statements	#####
 
@@ -18,9 +18,6 @@ import math				# sin, cos, etc
 import struct			# For converting byte to float
 import datetime			# For delta timing
 import os				# For testing?
-
-
-
 
 #####	Initialize Libraries and Variable Declarations	  #####
 
@@ -34,7 +31,7 @@ test = True
 
 ### Initialize serial
 if (not test): 
-	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
+	ser = serial.Serial('/dev/ttyACM0',9600)
 
 ### [Overarching State Variable] Declarations
 rpm = 0.0
@@ -100,12 +97,10 @@ def draw_warning_message(message, primary, secondary):
 def readData():
 	global ser
 	global rpm, engineLoad, throttle, temp, oxygen, speed, gear, volts
-	ser.flush()
 	if (ser.inWaiting() > 0):
 		data = ser.read()
 		if (data == bytes(b'!')):
 			data = ser.read()
-
 			# Packet Headers:
 			# 0x30 : RPMs
 			# 0x31 : Engine Load
@@ -117,44 +112,34 @@ def readData():
 			# 0x37 : Battery Voltage
 
 			if (data == bytes(b'0')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
 				payload = struct.unpack('>f',ser.read(4))[0]
-				#print(payload)
 				rpm = payload
 
 			elif (data == bytes(b'1')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
 				payload = struct.unpack('>f',ser.read(4))[0]
 				engineLoad = payload
 
 			elif (data == bytes(b'2')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
 				payload = struct.unpack('>f',ser.read(4))[0]
 				throttle = payload
 
 			elif (data == bytes(b'3')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
 				payload = struct.unpack('>f',ser.read(4))[0]
 				temp = payload
 
 			elif (data == bytes(b'4')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
 				payload = struct.unpack('>f',ser.read(4))[0]
 				oxygen = payload
 
 			elif (data == bytes(b'5')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
 				payload = struct.unpack('>f',ser.read(4))[0]
 				speed = payload
 
 			elif (data == bytes(b'6')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = int(list(ser.read())[0])
-				#print(payload)
+				payload = ord(struct.unpack('c',ser.read())[0])
 				gear = payload
 
 			elif (data == bytes(b'7')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
 				payload = struct.unpack('>f',ser.read(4))[0]
 				volts = payload
 
@@ -251,20 +236,20 @@ def rpmColor(n):
 # Setup Screen
 display_size=width, height=800,480 # Size of the Adafruit screen
 screen = pygame.display.set_mode(display_size)
-pygame.display.toggle_fullscreen() # Sets display mode to full screen
+#pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
 # More Screen Setup (I dunno what this does? artifact from old code?)
 screen.fill(green)
 pygame.display.flip()
-time.sleep(5)
 
 # Final Screen Serup
 screen.fill(grey)
 
 # Display Logo (doesn't work on my laptop for some reason; uncomment to display)
-#img = pygame.image.load("WURacing-Logo-Big.png")
-#img = pygame.transform.scale(img, (600,480))
-#screen.blit(img, (400,0))
+img = pygame.image.load("WURacing-Logo-Big.png")
+img = pygame.transform.scale(img, (600,480))
+screen.blit(img, (400,0))
+time.sleep(5)
 
 
 ###		Testing Mode	 ###
@@ -298,7 +283,7 @@ if (test):
 				screen.blit(txtrpm,(250,180))
 			
 # 			Draw Temperature
-			txttemp = temp_font.render((str(int(inptTemp)) + "º"),1,white)
+			txttemp = temp_font.render((str(int(inptTemp)) + "\xb0"),1,white)
 			screen.blit(txttemp,(80,375))
 			
 # 			Delta Timing for warning message
@@ -329,23 +314,59 @@ if (test):
 ###		Reading Mode	 ###
 # Gets serial values and animates the dashboard
 if (not test):
-	
+	ser.flush()
+	warning_state = True
+	previousTime = datetime.datetime.now()
+
 	while (True):
-	
-#		Animate using new data
+
 		draw_screen()
+		draw_rpm_bar(rpm)
 
-		smooth_rpm()
+		redline = rpm > 12000
 		
-		draw_indicator(linear_transform(display_rpm,0,13000,45,315),190,160,240)
+# 			Get Raw Input RPM
+		txtrpm = rpm_font.render(str(int(rpm)),1,white)
+		
+# 			Readability RPM (I prefer this formatting; replace line above to implement
+# 			txtrpm = rpm_font.render((str(int(i / 1000)) + "." + str(int((i % 1000) / 100)) + "k"),1,white)
 
-		text = display_font.render(str(temp) + u'\N{DEGREE SIGN}',1,white)
+# 			Draw Raw Input RPM (Always text-centered)
+		if (rpm < 100):
+			screen.blit(txtrpm,(355,180))
+		elif (rpm < 1000):
+			screen.blit(txtrpm,(320,180))
+		elif (rpm < 10000):
+			screen.blit(txtrpm,(285,180))
+		else:
+			screen.blit(txtrpm,(250,180))
+		
+# 			Draw Temperature
+		txttemp = temp_font.render((str(int(temp)) + "\xb0"),1,white)
+		screen.blit(txttemp,(80,375))
+		
+# 			Delta Timing for warning message
+		currentTime = datetime.datetime.now()
+		deltaTime = currentTime - previousTime
+		
+		
+###			Warning Message Code
 
-		txtrpm = rpm_font.render(str(int(rpm)),1,rpmColor(rpm))
-
-		screen.blit(text,(470,40))
-		screen.blit(txtrpm,(100,220))
-
+# 			Flashing Message State Machine
+		if (deltaTime.microseconds > 500000):
+			if (warning_state):
+				# Draw State
+				warning_state = False
+				previousTime = datetime.datetime.now()
+			else:
+					# Don't Draw State
+				warning_state = True
+				previousTime = datetime.datetime.now()
+		
+# 			Draw/Don't Draw depending on state
+		if (warning_state and redline):
+			draw_warning_message("test",red,grey)
+		 
 		pygame.display.update()
 
 		readData()
