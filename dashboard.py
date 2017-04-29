@@ -24,7 +24,7 @@ test = True
 
 # Initialize serial
 if (not test): 
-	ser = serial.Serial('/dev/cu.usbmodem1411',9600)
+	ser = serial.Serial('/dev/ttyUSB0',9600)
 
 # Draws pointer on dials
 def draw_indicator(angle,length,center_x,center_y):
@@ -223,17 +223,17 @@ display_size=width, height=800,480 # Size of the Adafruit screen
 
 screen = pygame.display.set_mode(display_size)
 
-pygame.display.toggle_fullscreen() # Sets display mode to full screen
+#pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
 # Display Logo
 
-img = pygame.image.load("WURacing-logo-big.png")
-
-img = pygame.transform.scale(img, (600,480))
+#img = pygame.image.load("WURacing-Logo-Big.png")# 
+# 
+#img = pygame.transform.scale(img, (600,480))
 
 screen.fill(green)
 
-screen.blit(img, (100,0))
+# screen.blit(img, (100,0))
 
 pygame.display.flip()
 
