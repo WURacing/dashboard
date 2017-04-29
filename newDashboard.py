@@ -18,6 +18,7 @@ import math				# sin, cos, etc
 import struct			# For converting byte to float
 import datetime			# For delta timing
 import os				# For testing?
+from subprocess import call 	#Used for calling external functions
 
 #####	Initialize Libraries and Variable Declarations	  #####
 
@@ -42,14 +43,25 @@ temp = 0.0
 oxygen = 0.0
 speed = 0.0
 gear = 0
-volts = 0.0
+volts = 0.0 	# This is actually a running average of the voltage across 20 elements
+
+buf_length = 50
+volt_buf = [13] * buf_length;
+buf_count = 0;
+buf_sum = sum(volt_buf)
+
+shutoff = False;
 
 ### Font Declarations
 temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
 rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
 warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
 
-
+### Important Constats
+shift_rpm = 11500
+high_temp = 210
+low_battery = 12
+redline_rpm = 12000
 
 
 ##### Function Definitions #####
@@ -84,13 +96,19 @@ def smooth_rpm():
 def draw_warning_message(message, primary, secondary):
 	pygame.draw.rect(screen, primary, (25,125,750,325))
 	pygame.draw.rect(screen, secondary, (50,150,700,275))
-	if (message == "test"):
-		warning = warning_font.render("WARNING",1,white)
-		screen.blit(warning,(135,175))
+
+###	This wasn't really doing what it was mean to 
+
+	# if (message == "test"):
+	# 	warning = warning_font.render("WARNING",1,white)
+	# 	screen.blit(warning,(135,175))
 		
-	else:
-		warning = warning_font.render("Hello!",1,white)
-		screen.blit(warning,(135,175))
+	# else:
+	# 	warning = warning_font.render("Hello!",1,white)
+	# 	screen.blit(warning,(135,175))
+
+	warning = warning_font.render(message,1,white)
+	screen.blit(warning, (135,175));
 
 ### Reads data from bus
 # All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
@@ -141,7 +159,8 @@ def readData():
 
 			elif (data == bytes(b'7')):
 				payload = struct.unpack('>f',ser.read(4))[0]
-				volts = payload
+				voltageUpdate(payload)
+
 
 			else:
 				print("ERROR: Corrupted Data")
@@ -149,6 +168,30 @@ def readData():
 			pass
 	else:
 		pass
+
+# Used to turn off the RPi when the battery voltage gets critically low
+def lowBatteryShutoff():
+	shutoff = True;
+	call(["shutdown"])	# Executes the shutdown function
+
+def voltageUpdate(vInput):
+
+	buf_count %= buf_length
+
+	buf_sum -= volt_buf[buf_count]
+
+	volt_buf[buf_count] = vInput;
+
+	buf_sum += volt_buf[buf_count]
+
+	volts = buf_sum/float(buf_length)
+
+	buf_count += 1
+
+	if (volts < low_battery):
+
+		lowBatteryShutoff()
+
 
 ### OBSOLETE ####
 
@@ -323,7 +366,11 @@ if (not test):
 		draw_screen()
 		draw_rpm_bar(rpm)
 
-		redline = rpm > 12000
+#			Check for warnings
+		redline = rpm > redline_rpm
+		shift 	= rpm > shift_rpm
+		overheat= temp > high_temp
+
 		
 # 			Get Raw Input RPM
 		txtrpm = rpm_font.render(str(int(rpm)),1,white)
@@ -364,8 +411,14 @@ if (not test):
 				previousTime = datetime.datetime.now()
 		
 # 			Draw/Don't Draw depending on state
-		if (warning_state and redline):
-			draw_warning_message("test",red,grey)
+		if (warning_state and shutoff):
+			draw_warning_message("SHUTOFF",red,grey)
+		elif (warning_state and redline):
+			draw_warning_message("REDLINE",red,grey)
+		elif (warning_state and overheat):
+			draw_warning_message("OVERHEAT",red,grey)
+		elif (warning_state and shift):
+			draw_warning_message("SHIFT",green,grey)
 		 
 		pygame.display.update()
 
