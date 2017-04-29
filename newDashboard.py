@@ -66,7 +66,7 @@ rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
 warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
 
 ### Important Constats
-shift_rpm = 11500
+shift_rpm = 11000
 high_temp = 210
 low_battery = 12
 redline_rpm = 12000
@@ -81,15 +81,13 @@ def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
 ### Draws the RPM bar at the top of the screen
 def draw_rpm_bar(i):
 	inpt = linear_transform(i,0,13000,0,800)
-	
-	for j in range(0,inpt):
-		colorInpt = linear_transform(j,0,800,0,13000)
-		pygame.draw.line(screen, rpmColor(colorInpt), (j,0), (j,100), 1)
+	pygame.draw.rect(screen, rpmColor(i), (0,0,inpt,98))
 
 
 ### Draws all parts of display that are not data-dependent
 def draw_screen():
 	screen.fill(black)
+	#pygame.draw.rect(screen, black, (0,100,800,700))
 	
 	#Bar line
 	pygame.draw.line(screen, lgrey, (0,100),(800,100), 5)
@@ -102,11 +100,11 @@ def smooth_rpm():
 
 ### Draws the warning message for flashing warnings on the dashboard
 def draw_warning_message(message, primary, secondary):
-	pygame.draw.rect(screen, primary, (25,25,750,425))
-	pygame.draw.rect(screen, secondary, (50,50,700,375))
+	pygame.draw.rect(screen, primary, (25,125,750,325))
+	pygame.draw.rect(screen, secondary, (50,150,700,275))
 
 	warning = warning_font.render(message,1,white)
-	screen.blit(warning, (135,175))
+	screen.blit(warning, (400-(warning.get_rect().width/2),175))
 
 ### Reads data from bus
 # All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
@@ -191,7 +189,6 @@ def voltageUpdate(vInput):
 	buf_count += 1
 
 	if (volts < low_battery):
-
 		lowBatteryShutoff()
 
 ######	Color Definitions	######
@@ -204,35 +201,31 @@ white = (255,255,255)
 
 #Returns the color of the RPM bar depending on the RPM
 def rpmColor(n):
-	# HSLA formatting	
-	inpt = linear_transform(n,0,13000,100,0)
+	# HSLA formatting
+	if n < 4000:
+		inpt = 100
+	else:	
+		inpt = linear_transform(n,4000,13000,100,0)
 	color = pygame.Color(255)
 	color.hsla = (inpt,100,50,0)
 	return color
-
-
-
 
 #####	MAIN CODE	#####
 
 # Setup Screen
 display_size=width, height=800,480 # Size of the Adafruit screen
 screen = pygame.display.set_mode(display_size)
-#pygame.display.toggle_fullscreen() # Sets display mode to full screen
+pygame.display.toggle_fullscreen() # Sets display mode to full screen
 
 # More Screen Setup (I dunno what this does? artifact from old code?)
-screen.fill(green)
-pygame.display.flip()
-
-# Final Screen Serup
-screen.fill(grey)
+screen.fill(black)
 
 # Display Logo (doesn't work on my laptop for some reason; uncomment to display)
 img = pygame.image.load("WURacing-Logo-Big.png")
 img = pygame.transform.scale(img, (600,480))
-screen.blit(img, (400,0))
+screen.blit(img, (100,0))
+pygame.display.update()
 time.sleep(5)
-
 
 ###		Testing Mode	 ###
 if (test):
@@ -303,6 +296,7 @@ if (not test):
 	while (True):
 
 		draw_screen()
+		draw_rpm_bar(rpm)
 
 ###			Warning Message Code
 
@@ -335,8 +329,6 @@ if (not test):
 		elif (warning_state and shift):
 			draw_warning_message("SHIFT",green,grey)
 		else:
-
-			draw_rpm_bar(rpm)
 			
 	# 			Get Raw Input RPM
 			txtrpm = rpm_font.render(str(int(rpm)),1,white)
