@@ -213,9 +213,10 @@ def rpmColor(n):
 #####	MAIN CODE	#####
 
 # Setup Screen
-display_size=width, height=800,480 # Size of the Adafruit screen
+display_size=width, height=800,480 	# Size of the Adafruit screen
 screen = pygame.display.set_mode(display_size)
-pygame.display.toggle_fullscreen() # Sets display mode to full screen
+pygame.display.toggle_fullscreen() 	# Sets display mode to full screen
+pygame.mouse.set_visible(False)		# Turns off cursor visibility
 
 # More Screen Setup (I dunno what this does? artifact from old code?)
 screen.fill(black)
