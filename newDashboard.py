@@ -68,7 +68,10 @@ warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
 ### Important Constats
 shift_rpm = 11000
 high_temp = 210
-low_battery = 12
+
+too_low = 1		# We use this to throw out any obviously wrong data and keep it from skewing the average
+low_battery = 11.5
+
 redline_rpm = 12000
 
 
@@ -110,7 +113,7 @@ def draw_warning_message(message, primary, secondary):
 # All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
 def readData():
 	global ser
-	global rpm, engineLoad, throttle, temp, oxygen, speed, gear, volts
+	global rpm, engineLoad, throttle, temp, oxygen, speed, gear, volts, too_low
 	if (ser.inWaiting() > 0):
 		data = ser.read()
 		if (data == bytes(b'!')):
@@ -155,7 +158,8 @@ def readData():
 
 			elif (data == bytes(b'7')):
 				payload = struct.unpack('>f',ser.read(4))[0]
-				voltageUpdate(payload)
+				if (payload > too_low):
+					voltageUpdate(payload)
 
 			else:
 				print("ERROR: Corrupted Data")
