@@ -192,8 +192,8 @@ def voltageUpdate(vInput):
 
 	buf_count += 1
 
-	if (volts < low_battery):
-		lowBatteryShutoff()
+	#if (volts < low_battery):
+		#lowBatteryShutoff()
 
 ######	Color Definitions	######
 red = 	(255,0,0)
