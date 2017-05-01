@@ -192,6 +192,7 @@ def voltageUpdate(vInput):
 
 	buf_count += 1
 
+### According to carter, this is acting up. Needs work.
 	#if (volts < low_battery):
 		#lowBatteryShutoff()
 
