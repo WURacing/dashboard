@@ -30,7 +30,7 @@ pygame.init()
 ### Initialize as Testing Mode or Reading Rode
 # True => Testing
 # False => Reading
-test = False
+test = True
 
 ### Initialize serial
 ser = None
@@ -61,7 +61,7 @@ buf_sum = sum(volt_buf)
 shutoff = False
 
 ### Font Declarations
-temp_font = pygame.font.Font("fonts/monaco.ttf", 40)
+temp_font = pygame.font.Font("fonts/monaco.ttf", 70)
 rpm_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 100)
 warning_font = pygame.font.Font("fonts/Roboto-BlackItalic.ttf", 120)
 
@@ -220,7 +220,7 @@ def rpmColor(n):
 # Setup Screen
 display_size=width, height=800,480 	# Size of the Adafruit screen
 screen = pygame.display.set_mode(display_size)
-pygame.display.toggle_fullscreen() 	# Sets display mode to full screen
+#pygame.display.toggle_fullscreen() 	# Sets display mode to full screen
 pygame.mouse.set_visible(False)		# Turns off cursor visibility
 
 # More Screen Setup (I dunno what this does? artifact from old code?)
@@ -265,7 +265,7 @@ if (test):
 			
 # 			Draw Temperature
 			txttemp = temp_font.render((str(int(inptTemp)) + "\xb0"),1,white)
-			screen.blit(txttemp,(80,375))
+			screen.blit(txttemp,(80,315))
 			
 # 			Delta Timing for warning message
 			currentTime = datetime.datetime.now()
@@ -354,7 +354,7 @@ if (not test):
 			
 	# 			Draw Temperature
 			txttemp = temp_font.render((str(int(temp)) + "\xb0"),1,white)
-			screen.blit(txttemp,(80,375))
+			screen.blit(txttemp,(80,315))
 			
 	# 			Draw/Don't Draw depending on state
 		 
