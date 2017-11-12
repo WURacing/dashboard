@@ -16,6 +16,7 @@ import serial			# Serial Library
 import time				# For delays
 import math				# sin, cos, etc
 import struct			# For converting byte to float
+import global_vars
 
 import os
 
@@ -23,18 +24,18 @@ import os
 test = True
 
 # Initialize serial
-if (not test): 
+if (not test):
 	ser = serial.Serial('/dev/ttyUSB0',9600)
 
 # Draws pointer on dials
 def draw_indicator(angle,length,center_x,center_y):
 
 	x_len = math.cos(math.radians(angle))*float(length) # Finds the x and y compoents of the length
-	y_len = math.sin(math.radians(angle))*float(length) 
+	y_len = math.sin(math.radians(angle))*float(length)
 
-	x_pos = center_x - x_len # Finds the x and y 
+	x_pos = center_x - x_len # Finds the x and y
 	y_pos = center_y - y_len
-	
+
 	inner_x_pos = int(center_x-(.6*x_len))										# x coordinate of inside point
 	inner_y_pos = int(center_y-(.6*y_len))
 
@@ -101,22 +102,25 @@ def draw_screen():
 	draw_tick_marks(45,315,14,160,240,200)
 # 	pygame.draw.rect(screen, green, (80,240,160,80))  RPM Font Box
 #	screen.blit(logo.image,logo.rect)
-	
+
 #	Draw rectangles
 	pygame.draw.rect(screen, lgrey, (440,10,320,210))
 	pygame.draw.rect(screen, green, (450,20,300,190))
 	pygame.draw.rect(screen, lgrey, (440,260,320,210))
 	pygame.draw.rect(screen, green, (450,270,300,190))
-	
+
 #	Draw logo
 # 	screen.blit(logo.image,logo.rect)
-	
+
 
 # maps a variable from one space to another
 def linear_transform(input,rangeOneStart,rangeOneEnd,rangeTwoStart,rangeTwoEnd):
 
 	return int((input-rangeOneStart)*(float(rangeTwoEnd-rangeTwoStart)/float(rangeOneEnd-rangeOneStart))+rangeTwoStart)
 
+def record(prefix, timestamp, payload):
+	with open(global_vars.filenames[prefix], 'a') as csvfile:
+		csvfile.write(str(timestamp)+','+str(payload)+'\n')
 
 # All code taken from Thomas Kelly's implementation of readData() in serial_thread.py
 def readData():
@@ -139,46 +143,63 @@ def readData():
 			# 0x37 : Battery Voltage
 
 			if (data == bytes(b'0')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				#print(payload)
-				rpm = payload
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+				# print(payload)
+				record(prefix="RPMs", timestamp=timestamp, payload=payload)
 
 			elif (data == bytes(b'1')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				engineLoad = payload
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+				record(prefix="Load", timestamp=timestamp, payload=payload)
 
 			elif (data == bytes(b'2')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				throttle = payload
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+				record(prefix="Throttle", timestamp=timestamp, payload=payload)
 
 			elif (data == bytes(b'3')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				temp = payload
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+
+				record(prefix="Coolant", timestamp=timestamp, payload=payload)
 
 			elif (data == bytes(b'4')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				oxygen = payload
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+
+				record(prefix="O2", timestamp=timestamp, payload=payload)
 
 			elif (data == bytes(b'5')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				speed = payload
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+
+				record(prefix="Speed", timestamp=timestamp, payload=payload)
 
 			elif (data == bytes(b'6')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
+				timestamp = struct.unpack('>I', ser.read(4))[0]
 				payload = int(list(ser.read())[0])
-				#print(payload)
-				gear = payload
+				# print(payload)
+
+				record(prefix="Gear", timestamp=timestamp, payload=payload)
 
 			elif (data == bytes(b'7')):
-				timestamp = struct.unpack('>I',ser.read(4))[0]
-				payload = struct.unpack('>f',ser.read(4))[0]
-				volts = payload
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+
+				record(prefix="Volts", timestamp=timestamp, payload=payload)
+
+			elif (data == bytes(b'8')):
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+
+				record(prefix="RRPot", timestamp=timestamp, payload=payload)
+
+			elif (data == bytes(b'9')):
+				timestamp = struct.unpack('>I', ser.read(4))[0]
+				payload = struct.unpack('>f', ser.read(4))[0]
+
+				record(prefix="RLPot", timestamp=timestamp, payload=payload)
 
 			else:
 				print("ERROR: Corrupted Data")
@@ -214,7 +235,7 @@ def rpmColor(n):
 		return (		200+(inpt-200),		150-3*(inpt-200),		0)
 	else:
 		return (		250,					0,						0)
-	
+
 ###############################
 
 pygame.init()
@@ -227,7 +248,7 @@ screen = pygame.display.set_mode(display_size)
 
 # Display Logo
 
-#img = pygame.image.load("WURacing-Logo-Big.png")# 
+#img = pygame.image.load("WURacing-Logo-Big.png")#
 # 
 #img = pygame.transform.scale(img, (600,480))
 
@@ -271,7 +292,7 @@ if (test):
 	while 1:
 		for i in range(0,13000,50):
 			inpt = linear_transform(i,0,13000,45,315)
-			
+
 			draw_screen()
 
 			draw_indicator(inpt,190,160,240)
@@ -286,14 +307,14 @@ if (test):
 
 # Gets serial values and animates the dashboard
 if (not test):
-	
+
 	while (True):
 
 		# Animate using new data
 		draw_screen()
 
 		smooth_rpm()
-		
+
 		draw_indicator(linear_transform(display_rpm,0,13000,45,315),190,160,240)
 
 		text = display_font.render(str(temp) + u'\N{DEGREE SIGN}',1,white)
