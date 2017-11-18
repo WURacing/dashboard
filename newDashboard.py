@@ -18,6 +18,7 @@ import math				# sin, cos, etc
 import struct			# For converting byte to float
 import datetime			# For delta timing
 import os				# For testing?
+import redis			# Database
 from subprocess import call 	#Used for calling external functions
 
 from serial_ports import serial_ports
@@ -114,6 +115,7 @@ def draw_warning_message(message, primary, secondary):
 def readData():
 	global ser
 	global rpm, engineLoad, throttle, temp, oxygen, speed, gear, volts, too_low
+	global database
 	if (ser.inWaiting() > 0):
 		data = ser.read()
 		if (data == bytes(b'!')):
@@ -127,39 +129,56 @@ def readData():
 			# 0x35 : Vehicle Speed (The shitty one from the ECU anyway)
 			# 0x36 : Gear (Again, shitty ECU version)
 			# 0x37 : Battery Voltage
+			(unix,micros) = database.time()
+			time = unix + micros/float (1000000.0) #time stamp
 
 			if (data == bytes(b'0')):
 				payload = struct.unpack('>f',ser.read(4))[0]
 				rpm = payload
+				database.zadd("RPMs", time, payload)
 
 			elif (data == bytes(b'1')):
 				payload = struct.unpack('>f',ser.read(4))[0]
 				engineLoad = payload
+				database.zadd("engineLoad", time, payload)
+
 
 			elif (data == bytes(b'2')):
 				payload = struct.unpack('>f',ser.read(4))[0]
 				throttle = payload
+				database.zadd("throttle", time, payload)
+
 
 			elif (data == bytes(b'3')):
 				payload = struct.unpack('>f',ser.read(4))[0]
 				temp = payload
+				database.zadd("temp", time, payload)
+
 
 			elif (data == bytes(b'4')):
 				payload = struct.unpack('>f',ser.read(4))[0]
 				oxygen = payload
+				database.zadd("oxygen", time, payload)
+
 
 			elif (data == bytes(b'5')):
 				payload = struct.unpack('>f',ser.read(4))[0]
 				speed = payload
+				database.zadd("speed", time, payload)
+
 
 			elif (data == bytes(b'6')):
 				payload = ord(struct.unpack('c',ser.read())[0])
 				gear = payload
+				database.zadd("gear", time, payload)
+
 
 			elif (data == bytes(b'7')):
 				payload = struct.unpack('>f',ser.read(4))[0]
 				if (payload > too_low):
 					voltageUpdate(payload)
+				database.zadd("batteryVoltage", time, payload)
+
 
 			else:
 				print("ERROR: Corrupted Data")

@@ -1,4 +1,5 @@
 import os
+import redis
 from datetime import datetime
 
 def init():
@@ -21,3 +22,6 @@ def init():
 
 	global filenames
 	filenames = {prefix: directory+prefix+".csv" for prefix in prefixes}
+
+	global database
+	database = redis.StrictRedis(host = 'localhost', port = 6379, db = 0)
