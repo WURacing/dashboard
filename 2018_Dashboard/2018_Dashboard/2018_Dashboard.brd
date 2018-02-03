@@ -148,9 +148,12 @@
 <wire x1="-8.89" y1="17.78" x2="92.71" y2="17.78" width="0.1524" layer="20"/>
 <wire x1="92.71" y1="17.78" x2="105.41" y2="55.88" width="0.1524" layer="20"/>
 <wire x1="-8.89" y1="17.78" x2="-21.59" y2="55.88" width="0.1524" layer="20"/>
-<text x="10.795" y="19.05" size="1.016" layer="121">Design By:
-Michael Greer
+<text x="11.43" y="19.685" size="1.016" layer="121">Design By Michael Greer
 WURacing Electronics 2018</text>
+<circle x="-17.145" y="54.61" radius="2.24993125" width="0.1524" layer="20"/>
+<circle x="100.965" y="54.61" radius="2.24993125" width="0.1524" layer="20"/>
+<circle x="-6.35" y="21.59" radius="2.24993125" width="0.1524" layer="20"/>
+<circle x="90.17" y="21.59" radius="2.24993125" width="0.1524" layer="20"/>
 </plain>
 <libraries>
 <library name="led" urn="urn:adsk.eagle:library:259">
