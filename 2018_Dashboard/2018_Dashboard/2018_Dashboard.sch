@@ -4721,6 +4721,68 @@ No silk outline, but tDocu layer shows pin location.
 </deviceset>
 </devicesets>
 </library>
+<library name="SparkFun-PowerSymbols">
+<description>&lt;h3&gt;SparkFun Power Symbols&lt;/h3&gt;
+This library contains power, ground, and voltage-supply symbols.
+&lt;br&gt;
+&lt;br&gt;
+We've spent an enormous amount of time creating and checking these footprints and parts, but it is &lt;b&gt; the end user's responsibility&lt;/b&gt; to ensure correctness and suitablity for a given componet or application. 
+&lt;br&gt;
+&lt;br&gt;If you enjoy using this library, please buy one of our products at &lt;a href=" www.sparkfun.com"&gt;SparkFun.com&lt;/a&gt;.
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;Licensing:&lt;/b&gt; Creative Commons ShareAlike 4.0 International - https://creativecommons.org/licenses/by-sa/4.0/ 
+&lt;br&gt;
+&lt;br&gt;
+You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
+<packages>
+</packages>
+<symbols>
+<symbol name="VCC">
+<description>&lt;h3&gt;VCC Voltage Supply&lt;/h3&gt;</description>
+<wire x1="0.762" y1="1.27" x2="0" y2="2.54" width="0.254" layer="94"/>
+<wire x1="0" y1="2.54" x2="-0.762" y2="1.27" width="0.254" layer="94"/>
+<pin name="VCC" x="0" y="0" visible="off" length="short" direction="sup" rot="R90"/>
+<text x="0" y="2.794" size="1.778" layer="96" align="bottom-center">&gt;VALUE</text>
+</symbol>
+<symbol name="DGND">
+<description>&lt;h3&gt;Digital Ground Supply&lt;/h3&gt;</description>
+<wire x1="-1.905" y1="0" x2="1.905" y2="0" width="0.254" layer="94"/>
+<pin name="GND" x="0" y="2.54" visible="off" length="short" direction="sup" rot="R270"/>
+<text x="0" y="-0.254" size="1.778" layer="96" align="top-center">&gt;VALUE</text>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="VCC" prefix="SUPPLY">
+<description>&lt;h3&gt;VCC Voltage Supply&lt;/h3&gt;
+&lt;p&gt;Positive voltage supply (traditionally for a BJT device, C=collector).&lt;/p&gt;</description>
+<gates>
+<gate name="G$1" symbol="VCC" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="GND" prefix="GND">
+<description>&lt;h3&gt;Ground Supply Symbol&lt;/h3&gt;
+&lt;p&gt;Generic signal ground supply symbol.&lt;/p&gt;</description>
+<gates>
+<gate name="1" symbol="DGND" x="0" y="0"/>
+</gates>
+<devices>
+<device name="">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -4792,6 +4854,9 @@ No silk outline, but tDocu layer shows pin location.
 <part name="R2" library="SparkFun-Resistors" deviceset="330OHM" device="-0603-1/10W-1%" value="330"/>
 <part name="R3" library="SparkFun-Resistors" deviceset="330OHM" device="-0603-1/10W-1%" value="330"/>
 <part name="R4" library="SparkFun-Resistors" deviceset="330OHM" device="-0603-1/10W-1%" value="330"/>
+<part name="SUPPLY1" library="SparkFun-PowerSymbols" deviceset="VCC" device=""/>
+<part name="GND8" library="SparkFun-PowerSymbols" deviceset="GND" device=""/>
+<part name="C6" library="SparkFun-Capacitors" deviceset="0.1UF" device="-0402-16V-10%" value="0.1uF"/>
 </parts>
 <sheets>
 <sheet>
@@ -4859,6 +4924,10 @@ No silk outline, but tDocu layer shows pin location.
 <instance part="R2" gate="G$1" x="66.04" y="-50.8" rot="R90"/>
 <instance part="R3" gate="G$1" x="73.66" y="-50.8" rot="R90"/>
 <instance part="R4" gate="G$1" x="81.28" y="-50.8" rot="R90"/>
+<instance part="CAN_SERIAL" gate="P" x="-68.58" y="35.56"/>
+<instance part="SUPPLY1" gate="G$1" x="-68.58" y="50.8"/>
+<instance part="GND8" gate="1" x="-68.58" y="20.32"/>
+<instance part="C6" gate="G$1" x="-45.72" y="33.02"/>
 </instances>
 <busses>
 </busses>
@@ -5352,15 +5421,30 @@ No silk outline, but tDocu layer shows pin location.
 <pinref part="GND1" gate="1" pin="GND"/>
 <pinref part="SHIFT_3" gate="U1" pin="GND"/>
 <wire x1="-33.02" y1="12.7" x2="-33.02" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="22.86" x2="5.08" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="22.86" x2="2.54" y2="22.86" width="0.1524" layer="91"/>
 <pinref part="SHIF_2" gate="U1" pin="GND"/>
+<wire x1="2.54" y1="22.86" x2="5.08" y2="22.86" width="0.1524" layer="91"/>
 <wire x1="-33.02" y1="22.86" x2="-33.02" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="60.96" x2="5.08" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="60.96" x2="2.54" y2="60.96" width="0.1524" layer="91"/>
 <junction x="-33.02" y="22.86"/>
 <pinref part="SHIFT_1" gate="U1" pin="GND"/>
-<wire x1="5.08" y1="99.06" x2="-33.02" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="60.96" x2="5.08" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="5.08" y1="99.06" x2="2.54" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="99.06" x2="-33.02" y2="99.06" width="0.1524" layer="91"/>
 <wire x1="-33.02" y1="99.06" x2="-33.02" y2="60.96" width="0.1524" layer="91"/>
 <junction x="-33.02" y="60.96"/>
+<pinref part="SHIFT_3" gate="U1" pin="G"/>
+<wire x1="5.08" y1="27.94" x2="2.54" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="27.94" x2="2.54" y2="22.86" width="0.1524" layer="91"/>
+<junction x="2.54" y="22.86"/>
+<pinref part="SHIF_2" gate="U1" pin="G"/>
+<wire x1="5.08" y1="66.04" x2="2.54" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="66.04" x2="2.54" y2="60.96" width="0.1524" layer="91"/>
+<junction x="2.54" y="60.96"/>
+<pinref part="SHIFT_1" gate="U1" pin="G"/>
+<wire x1="5.08" y1="104.14" x2="2.54" y2="104.14" width="0.1524" layer="91"/>
+<wire x1="2.54" y1="104.14" x2="2.54" y2="99.06" width="0.1524" layer="91"/>
+<junction x="2.54" y="99.06"/>
 </segment>
 <segment>
 <pinref part="GND2" gate="1" pin="GND"/>
@@ -5462,6 +5546,16 @@ No silk outline, but tDocu layer shows pin location.
 <wire x1="91.44" y1="-114.3" x2="91.44" y2="-106.68" width="0.1524" layer="91"/>
 <junction x="91.44" y="-106.68"/>
 </segment>
+<segment>
+<pinref part="CAN_SERIAL" gate="P" pin="VSS"/>
+<pinref part="GND8" gate="1" pin="GND"/>
+<wire x1="-68.58" y1="27.94" x2="-68.58" y2="25.4" width="0.1524" layer="91"/>
+<pinref part="C6" gate="G$1" pin="2"/>
+<wire x1="-68.58" y1="25.4" x2="-68.58" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="30.48" x2="-45.72" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="25.4" x2="-68.58" y2="25.4" width="0.1524" layer="91"/>
+<junction x="-68.58" y="25.4"/>
+</segment>
 </net>
 <net name="VCC" class="0">
 <segment>
@@ -5531,6 +5625,16 @@ No silk outline, but tDocu layer shows pin location.
 <wire x1="-63.5" y1="-2.54" x2="-73.66" y2="-2.54" width="0.1524" layer="91"/>
 <wire x1="-73.66" y1="-2.54" x2="-73.66" y2="5.08" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="CAN_SERIAL" gate="P" pin="VDD"/>
+<pinref part="SUPPLY1" gate="G$1" pin="VCC"/>
+<wire x1="-68.58" y1="43.18" x2="-68.58" y2="45.72" width="0.1524" layer="91"/>
+<pinref part="C6" gate="G$1" pin="1"/>
+<wire x1="-68.58" y1="45.72" x2="-68.58" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="38.1" x2="-45.72" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="45.72" x2="-68.58" y2="45.72" width="0.1524" layer="91"/>
+<junction x="-68.58" y="45.72"/>
+</segment>
 </net>
 <net name="N$61" class="0">
 <segment>
@@ -5547,18 +5651,23 @@ No silk outline, but tDocu layer shows pin location.
 <wire x1="-91.44" y1="-25.4" x2="-152.4" y2="-25.4" width="0.1524" layer="91"/>
 <wire x1="-152.4" y1="-25.4" x2="-152.4" y2="-22.86" width="0.1524" layer="91"/>
 <pinref part="PROGRAM" gate="J$1" pin="3"/>
-<wire x1="-55.88" y1="76.2" x2="-83.82" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="76.2" x2="-71.12" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="-71.12" y1="76.2" x2="-83.82" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="-83.82" y1="76.2" x2="-83.82" y2="-7.62" width="0.1524" layer="91"/>
 <wire x1="-83.82" y1="-7.62" x2="-91.44" y2="-7.62" width="0.1524" layer="91"/>
 <junction x="-91.44" y="-7.62"/>
-</segment>
-</net>
-<net name="N$1" class="0">
-<segment>
 <pinref part="R21" gate="G$1" pin="2"/>
+<wire x1="-147.32" y1="149.86" x2="-147.32" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="-71.12" y1="76.2" x2="-71.12" y2="134.62" width="0.1524" layer="91"/>
+<wire x1="-71.12" y1="134.62" x2="-147.32" y2="134.62" width="0.1524" layer="91"/>
+<junction x="-71.12" y="76.2"/>
+<wire x1="-147.32" y1="134.62" x2="-152.4" y2="134.62" width="0.1524" layer="91"/>
+<junction x="-147.32" y="134.62"/>
 <pinref part="CONTROL" gate="U$1" pin="PC6(/RESET)"/>
-<wire x1="-147.32" y1="149.86" x2="-147.32" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="-147.32" y1="124.46" x2="-149.86" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="-152.4" y1="134.62" x2="-152.4" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="-152.4" y1="124.46" x2="-149.86" y2="124.46" width="0.1524" layer="91"/>
+<junction x="-149.86" y="124.46"/>
 </segment>
 </net>
 <net name="N$63" class="0">
@@ -5684,6 +5793,11 @@ No silk outline, but tDocu layer shows pin location.
 </nets>
 </sheet>
 </sheets>
+<errors>
+<approved hash="202,1,-134.62,12.7,CAN_SERIAL,TX0RTS,,,,"/>
+<approved hash="202,1,-134.62,10.16,CAN_SERIAL,TX1RTS,,,,"/>
+<approved hash="202,1,-134.62,7.62,CAN_SERIAL,TX2RTS,,,,"/>
+</errors>
 </schematic>
 </drawing>
 <compatibility>
