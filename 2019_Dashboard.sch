@@ -6880,6 +6880,18 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <part name="R11" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="330OHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="330"/>
 <part name="R12" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="330OHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="330"/>
 <part name="GND11" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="GND" device=""/>
+<part name="PARTY2" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
+<part name="T/S-TOOGLE" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
+<part name="RPADDLE" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
+<part name="PARTY1" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
+<part name="LAUNCH" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
+<part name="LPADDLE" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_02" device="LOCK" package3d_urn="urn:adsk.eagle:package:38045/1"/>
+<part name="SUPPLY2" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
+<part name="SUPPLY3" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
+<part name="SUPPLY4" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
+<part name="SUPPLY5" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
+<part name="SUPPLY6" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
+<part name="SUPPLY7" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -6953,6 +6965,18 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <instance part="R11" gate="G$1" x="78.74" y="-78.74"/>
 <instance part="R12" gate="G$1" x="78.74" y="-88.9"/>
 <instance part="GND11" gate="1" x="104.14" y="-104.14"/>
+<instance part="PARTY2" gate="G$1" x="-45.72" y="172.72" rot="R180"/>
+<instance part="T/S-TOOGLE" gate="G$1" x="-45.72" y="157.48" rot="R180"/>
+<instance part="RPADDLE" gate="G$1" x="-45.72" y="139.7" rot="R180"/>
+<instance part="PARTY1" gate="G$1" x="-71.12" y="172.72" rot="R180"/>
+<instance part="LAUNCH" gate="G$1" x="-71.12" y="157.48" rot="R180"/>
+<instance part="LPADDLE" gate="G$1" x="-71.12" y="139.7" rot="R180"/>
+<instance part="SUPPLY2" gate="G$1" x="-88.9" y="180.34"/>
+<instance part="SUPPLY3" gate="G$1" x="-60.96" y="182.88"/>
+<instance part="SUPPLY4" gate="G$1" x="-88.9" y="165.1"/>
+<instance part="SUPPLY5" gate="G$1" x="-60.96" y="165.1"/>
+<instance part="SUPPLY6" gate="G$1" x="-60.96" y="147.32"/>
+<instance part="SUPPLY7" gate="G$1" x="-88.9" y="147.32"/>
 </instances>
 <busses>
 </busses>
@@ -7300,6 +7324,42 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <wire x1="-7.62" y1="124.46" x2="-15.24" y2="124.46" width="0.1524" layer="91"/>
 <wire x1="-15.24" y1="124.46" x2="-15.24" y2="129.54" width="0.1524" layer="91"/>
 <junction x="-15.24" y="129.54"/>
+</segment>
+<segment>
+<pinref part="PARTY1" gate="G$1" pin="1"/>
+<wire x1="-78.74" y1="172.72" x2="-88.9" y2="172.72" width="0.1524" layer="91"/>
+<wire x1="-88.9" y1="172.72" x2="-88.9" y2="180.34" width="0.1524" layer="91"/>
+<pinref part="SUPPLY2" gate="G$1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="PARTY2" gate="G$1" pin="1"/>
+<wire x1="-53.34" y1="172.72" x2="-60.96" y2="172.72" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="172.72" x2="-60.96" y2="182.88" width="0.1524" layer="91"/>
+<pinref part="SUPPLY3" gate="G$1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="LAUNCH" gate="G$1" pin="1"/>
+<wire x1="-78.74" y1="157.48" x2="-88.9" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="-88.9" y1="157.48" x2="-88.9" y2="165.1" width="0.1524" layer="91"/>
+<pinref part="SUPPLY4" gate="G$1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="T/S-TOOGLE" gate="G$1" pin="1"/>
+<wire x1="-53.34" y1="157.48" x2="-60.96" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="157.48" x2="-60.96" y2="165.1" width="0.1524" layer="91"/>
+<pinref part="SUPPLY5" gate="G$1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="RPADDLE" gate="G$1" pin="1"/>
+<wire x1="-53.34" y1="139.7" x2="-60.96" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="-60.96" y1="139.7" x2="-60.96" y2="147.32" width="0.1524" layer="91"/>
+<pinref part="SUPPLY6" gate="G$1" pin="VCC"/>
+</segment>
+<segment>
+<pinref part="LPADDLE" gate="G$1" pin="1"/>
+<wire x1="-78.74" y1="139.7" x2="-88.9" y2="139.7" width="0.1524" layer="91"/>
+<wire x1="-88.9" y1="139.7" x2="-88.9" y2="147.32" width="0.1524" layer="91"/>
+<pinref part="SUPPLY7" gate="G$1" pin="VCC"/>
 </segment>
 </net>
 <net name="OSC1" class="0">
@@ -7780,6 +7840,80 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <wire x1="50.8" y1="-20.32" x2="50.8" y2="-88.9" width="0.1524" layer="91"/>
 <pinref part="R12" gate="G$1" pin="1"/>
 <wire x1="50.8" y1="-88.9" x2="73.66" y2="-88.9" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="RPADDLE" class="0">
+<segment>
+<pinref part="RPADDLE" gate="G$1" pin="2"/>
+<wire x1="-53.34" y1="137.16" x2="-53.34" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="-53.34" y1="132.08" x2="-63.5" y2="132.08" width="0.1524" layer="91"/>
+<label x="-63.5" y="127" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="GPB1"/>
+<wire x1="17.78" y1="45.72" x2="33.02" y2="45.72" width="0.1524" layer="91"/>
+<label x="25.4" y="45.72" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="LPADDLE" class="0">
+<segment>
+<pinref part="LPADDLE" gate="G$1" pin="2"/>
+<wire x1="-78.74" y1="137.16" x2="-78.74" y2="132.08" width="0.1524" layer="91"/>
+<wire x1="-78.74" y1="132.08" x2="-88.9" y2="132.08" width="0.1524" layer="91"/>
+<label x="-86.36" y="127" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="GPB0"/>
+<wire x1="17.78" y1="48.26" x2="33.02" y2="48.26" width="0.1524" layer="91"/>
+<label x="25.4" y="48.26" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="LAUNCH" class="0">
+<segment>
+<pinref part="LAUNCH" gate="G$1" pin="2"/>
+<wire x1="-78.74" y1="154.94" x2="-78.74" y2="149.86" width="0.1524" layer="91"/>
+<label x="-81.28" y="149.86" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="GPB3"/>
+<wire x1="17.78" y1="40.64" x2="33.02" y2="40.64" width="0.1524" layer="91"/>
+<label x="25.4" y="40.64" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="T/S-TOOGLE" class="0">
+<segment>
+<pinref part="T/S-TOOGLE" gate="G$1" pin="2"/>
+<wire x1="-53.34" y1="154.94" x2="-60.96" y2="154.94" width="0.1524" layer="91"/>
+<label x="-58.42" y="160.02" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="GPB2"/>
+<wire x1="17.78" y1="43.18" x2="33.02" y2="43.18" width="0.1524" layer="91"/>
+<label x="25.4" y="43.18" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PARTY1" class="0">
+<segment>
+<pinref part="PARTY1" gate="G$1" pin="2"/>
+<wire x1="-78.74" y1="170.18" x2="-86.36" y2="170.18" width="0.1524" layer="91"/>
+<label x="-86.36" y="170.18" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="GPB4"/>
+<wire x1="17.78" y1="38.1" x2="33.02" y2="38.1" width="0.1524" layer="91"/>
+<label x="25.4" y="38.1" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="PARTY2" class="0">
+<segment>
+<pinref part="PARTY2" gate="G$1" pin="2"/>
+<wire x1="-53.34" y1="170.18" x2="-60.96" y2="170.18" width="0.1524" layer="91"/>
+<label x="-60.96" y="170.18" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="IC2" gate="G$1" pin="GPB5"/>
+<wire x1="17.78" y1="35.56" x2="35.56" y2="35.56" width="0.1524" layer="91"/>
+<label x="25.4" y="35.56" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
