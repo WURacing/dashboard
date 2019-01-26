@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.2.2">
+<eagle version="9.1.3">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -5854,25 +5854,63 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <vertex x="4.7498" y="-7.1882" curve="-90"/>
 </polygon>
 </package>
-<package name="LED-0603" urn="urn:adsk.eagle:footprint:39307/1" library_version="1">
-<description>&lt;B&gt;LED 0603 SMT&lt;/B&gt;&lt;p&gt;
-0603, surface mount.
+<package name="LED_5MM" urn="urn:adsk.eagle:footprint:39305/1" library_version="1">
+<description>&lt;B&gt;LED 5mm PTH&lt;/B&gt;&lt;p&gt;
+5 mm, round
 &lt;p&gt;Specifications:
 &lt;ul&gt;&lt;li&gt;Pin count: 2&lt;/li&gt;
-&lt;li&gt;Pin pitch:0.075inch &lt;/li&gt;
-&lt;li&gt;Area: 0.06" x 0.03"&lt;/li&gt;
+&lt;li&gt;Pin pitch: 0.1inch&lt;/li&gt;
+&lt;li&gt;Diameter: 5mm&lt;/li&gt;
 &lt;/ul&gt;&lt;/p&gt;
 &lt;p&gt;Example device(s):
-&lt;ul&gt;&lt;li&gt;LED - BLUE&lt;/li&gt;</description>
-<smd name="C" x="0.877" y="0" dx="1" dy="1" layer="1" roundness="30" rot="R270"/>
-<smd name="A" x="-0.877" y="0" dx="1" dy="1" layer="1" roundness="30" rot="R270"/>
-<text x="0" y="0.635" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
-<text x="0" y="-0.635" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
-<wire x1="1.5875" y1="0.47625" x2="1.5875" y2="-0.47625" width="0.127" layer="21"/>
-<wire x1="0.15875" y1="0.47625" x2="0.15875" y2="0" width="0.127" layer="51"/>
-<wire x1="0.15875" y1="0" x2="0.15875" y2="-0.47625" width="0.127" layer="51"/>
-<wire x1="0.15875" y1="0" x2="-0.15875" y2="0.3175" width="0.127" layer="51"/>
-<wire x1="0.15875" y1="0" x2="-0.15875" y2="-0.3175" width="0.127" layer="51"/>
+&lt;ul&gt;&lt;li&gt;LED-IR-THRU&lt;/li&gt;</description>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="22"/>
+<wire x1="-1.143" y1="0" x2="0" y2="1.143" width="0.1524" layer="51" curve="-90" cap="flat"/>
+<wire x1="0" y1="-1.143" x2="1.143" y2="0" width="0.1524" layer="51" curve="90" cap="flat"/>
+<wire x1="-1.651" y1="0" x2="0" y2="1.651" width="0.1524" layer="51" curve="-90" cap="flat"/>
+<wire x1="0" y1="-1.651" x2="1.651" y2="0" width="0.1524" layer="51" curve="90" cap="flat"/>
+<wire x1="-2.159" y1="0" x2="0" y2="2.159" width="0.1524" layer="51" curve="-90" cap="flat"/>
+<wire x1="0" y1="-2.159" x2="2.159" y2="0" width="0.1524" layer="51" curve="90" cap="flat"/>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="21"/>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.254" layer="21" curve="-286.260205" cap="flat"/>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="51"/>
+<pad name="A" x="-1.27" y="0" drill="0.8128" diameter="1.8796"/>
+<pad name="K" x="1.27" y="0" drill="0.8128" diameter="1.8796"/>
+<text x="0" y="3.3909" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0.0254" y="-3.3909" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+<circle x="0" y="0" radius="2.54" width="0.1524" layer="21"/>
+</package>
+<package name="LED_3MM" urn="urn:adsk.eagle:footprint:39306/1" library_version="1">
+<description>&lt;h3&gt;LED 3MM PTH&lt;/h3&gt;
+
+3 mm, round.
+
+&lt;p&gt;Specifications:
+&lt;ul&gt;&lt;li&gt;Pin count: 2&lt;/li&gt;
+&lt;li&gt;Pin pitch: 0.1inch&lt;/li&gt;
+&lt;li&gt;Diameter: 3mm&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;Example device(s):
+&lt;ul&gt;&lt;li&gt;LED&lt;/li&gt;&lt;/ul&gt;</description>
+<wire x1="1.5748" y1="-1.27" x2="1.5748" y2="1.27" width="0.254" layer="51"/>
+<wire x1="0" y1="2.032" x2="1.561" y2="1.3009" width="0.254" layer="22" curve="-50.193108" cap="flat"/>
+<wire x1="-1.7929" y1="0.9562" x2="0" y2="2.032" width="0.254" layer="22" curve="-61.926949" cap="flat"/>
+<wire x1="0" y1="-2.032" x2="1.5512" y2="-1.3126" width="0.254" layer="22" curve="49.763022" cap="flat"/>
+<wire x1="-1.7643" y1="-1.0082" x2="0" y2="-2.032" width="0.254" layer="22" curve="60.255215" cap="flat"/>
+<wire x1="-2.032" y1="0" x2="-1.7891" y2="0.9634" width="0.254" layer="51" curve="-28.301701" cap="flat"/>
+<wire x1="-2.032" y1="0" x2="-1.7306" y2="-1.065" width="0.254" layer="51" curve="31.60822" cap="flat"/>
+<wire x1="1.5748" y1="1.2954" x2="1.5748" y2="0.7874" width="0.254" layer="22"/>
+<wire x1="1.5748" y1="-1.2954" x2="1.5748" y2="-0.8382" width="0.254" layer="22"/>
+<wire x1="0" y1="2.032" x2="1.561" y2="1.3009" width="0.254" layer="21" curve="-50.193108" cap="flat"/>
+<wire x1="-1.7929" y1="0.9562" x2="0" y2="2.032" width="0.254" layer="21" curve="-61.926949" cap="flat"/>
+<wire x1="0" y1="-2.032" x2="1.5512" y2="-1.3126" width="0.254" layer="21" curve="49.763022" cap="flat"/>
+<wire x1="-1.7643" y1="-1.0082" x2="0" y2="-2.032" width="0.254" layer="21" curve="60.255215" cap="flat"/>
+<wire x1="1.5748" y1="1.2954" x2="1.5748" y2="0.7874" width="0.254" layer="21"/>
+<wire x1="1.5748" y1="-1.2954" x2="1.5748" y2="-0.8382" width="0.254" layer="21"/>
+<pad name="A" x="-1.27" y="0" drill="0.8128" diameter="1.8796"/>
+<pad name="K" x="1.27" y="0" drill="0.8128" diameter="1.8796"/>
+<text x="0" y="2.286" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-2.286" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
 </package>
 <package name="LED-1206" urn="urn:adsk.eagle:footprint:39304/1" library_version="1">
 <description>&lt;h3&gt;LED 1206 SMT&lt;/h3&gt;
@@ -5894,6 +5932,158 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <smd name="C" x="1.5" y="0" dx="1.2" dy="1.4" layer="1"/>
 <text x="0" y="0.9525" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
 <text x="0" y="-0.9525" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+</package>
+<package name="LED-0603" urn="urn:adsk.eagle:footprint:39307/1" library_version="1">
+<description>&lt;B&gt;LED 0603 SMT&lt;/B&gt;&lt;p&gt;
+0603, surface mount.
+&lt;p&gt;Specifications:
+&lt;ul&gt;&lt;li&gt;Pin count: 2&lt;/li&gt;
+&lt;li&gt;Pin pitch:0.075inch &lt;/li&gt;
+&lt;li&gt;Area: 0.06" x 0.03"&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;Example device(s):
+&lt;ul&gt;&lt;li&gt;LED - BLUE&lt;/li&gt;</description>
+<smd name="C" x="0.877" y="0" dx="1" dy="1" layer="1" roundness="30" rot="R270"/>
+<smd name="A" x="-0.877" y="0" dx="1" dy="1" layer="1" roundness="30" rot="R270"/>
+<text x="0" y="0.635" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-0.635" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+<wire x1="1.5875" y1="0.47625" x2="1.5875" y2="-0.47625" width="0.127" layer="21"/>
+<wire x1="0.15875" y1="0.47625" x2="0.15875" y2="0" width="0.127" layer="51"/>
+<wire x1="0.15875" y1="0" x2="0.15875" y2="-0.47625" width="0.127" layer="51"/>
+<wire x1="0.15875" y1="0" x2="-0.15875" y2="0.3175" width="0.127" layer="51"/>
+<wire x1="0.15875" y1="0" x2="-0.15875" y2="-0.3175" width="0.127" layer="51"/>
+</package>
+<package name="LED_10MM" urn="urn:adsk.eagle:footprint:39308/1" library_version="1">
+<description>&lt;B&gt;LED 10mm PTH&lt;/B&gt;&lt;p&gt;
+10 mm, round
+&lt;p&gt;Specifications:
+&lt;ul&gt;&lt;li&gt;Pin count: 2&lt;/li&gt;
+&lt;li&gt;Pin pitch: 0.2inch&lt;/li&gt;
+&lt;li&gt;Diameter: 10mm&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;Example device(s):
+&lt;ul&gt;&lt;li&gt;LED&lt;/li&gt;</description>
+<wire x1="-5" y1="-2" x2="-5" y2="2" width="0.2032" layer="21" curve="316.862624"/>
+<wire x1="-5" y1="2" x2="-5" y2="-2" width="0.2032" layer="21"/>
+<wire x1="-5" y1="2" x2="-5" y2="-2" width="0.2032" layer="22"/>
+<wire x1="-5" y1="2" x2="-5" y2="-2" width="0.2032" layer="51"/>
+<pad name="A" x="2.54" y="0" drill="2.4" diameter="3.7"/>
+<pad name="C" x="-2.54" y="0" drill="2.4" diameter="3.7"/>
+<text x="2.159" y="2.54" size="1.016" layer="51" ratio="15">L</text>
+<text x="-2.921" y="2.54" size="1.016" layer="51" ratio="15">S</text>
+<text x="0" y="5.715" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-5.715" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+</package>
+<package name="FKIT-LED-1206" urn="urn:adsk.eagle:footprint:39309/1" library_version="1">
+<description>&lt;B&gt;LED 1206 SMT&lt;/B&gt;&lt;p&gt;
+1206, surface mount
+&lt;p&gt;Specifications:
+&lt;ul&gt;&lt;li&gt;Pin count: 2&lt;/li&gt;
+&lt;li&gt;Area: 0.125"x 0.06" &lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;Example device(s):
+&lt;ul&gt;&lt;li&gt;LED&lt;/li&gt;</description>
+<wire x1="1.55" y1="-0.75" x2="-1.55" y2="-0.75" width="0.1016" layer="51"/>
+<wire x1="-1.55" y1="-0.75" x2="-1.55" y2="0.75" width="0.1016" layer="51"/>
+<wire x1="-1.55" y1="0.75" x2="1.55" y2="0.75" width="0.1016" layer="51"/>
+<wire x1="1.55" y1="0.75" x2="1.55" y2="-0.75" width="0.1016" layer="51"/>
+<wire x1="-0.55" y1="0.5" x2="-0.55" y2="-0.5" width="0.1016" layer="51" curve="84.547378"/>
+<wire x1="0.55" y1="-0.5" x2="0.55" y2="0.5" width="0.1016" layer="51" curve="84.547378"/>
+<wire x1="2.54" y1="0.9525" x2="2.54" y2="-0.9525" width="0.2032" layer="21"/>
+<wire x1="0.3175" y1="0.635" x2="0.3175" y2="0" width="0.2032" layer="51"/>
+<wire x1="0.3175" y1="0" x2="0.3175" y2="-0.635" width="0.2032" layer="51"/>
+<wire x1="0.3175" y1="0" x2="0" y2="0.3175" width="0.2032" layer="51"/>
+<wire x1="0.3175" y1="0" x2="0" y2="-0.3175" width="0.2032" layer="51"/>
+<smd name="A" x="-1.422" y="0" dx="1.6" dy="1.803" layer="1"/>
+<smd name="C" x="1.422" y="0" dx="1.6" dy="1.803" layer="1"/>
+<text x="0" y="1.11125" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-1.11125" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+<rectangle x1="0.45" y1="-0.7" x2="0.8" y2="-0.45" layer="51"/>
+<rectangle x1="0.8" y1="-0.7" x2="0.9" y2="0.5" layer="51"/>
+<rectangle x1="0.8" y1="0.55" x2="0.9" y2="0.7" layer="51"/>
+<rectangle x1="-0.9" y1="-0.7" x2="-0.8" y2="0.5" layer="51"/>
+<rectangle x1="-0.9" y1="0.55" x2="-0.8" y2="0.7" layer="51"/>
+</package>
+<package name="LED_3MM-NS" urn="urn:adsk.eagle:footprint:39310/1" library_version="1">
+<description>&lt;h3&gt;LED 3MM PTH- No Silk&lt;/h3&gt;
+
+3 mm, round, no silk outline of package
+
+&lt;p&gt;Specifications:
+&lt;ul&gt;&lt;li&gt;Pin count: 2&lt;/li&gt;
+&lt;li&gt;Pin pitch: 0.1inch&lt;/li&gt;
+&lt;li&gt;Diameter: 3mm&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;Example device(s):
+&lt;ul&gt;&lt;li&gt;LED&lt;/li&gt;&lt;/ul&gt;</description>
+<wire x1="1.5748" y1="-1.27" x2="1.5748" y2="1.27" width="0.254" layer="51"/>
+<wire x1="0" y1="2.032" x2="1.561" y2="1.3009" width="0.254" layer="51" curve="-50.193108" cap="flat"/>
+<wire x1="-1.7929" y1="0.9562" x2="0" y2="2.032" width="0.254" layer="51" curve="-61.926949" cap="flat"/>
+<wire x1="0" y1="-2.032" x2="1.5512" y2="-1.3126" width="0.254" layer="51" curve="49.763022" cap="flat"/>
+<wire x1="-1.7643" y1="-1.0082" x2="0" y2="-2.032" width="0.254" layer="51" curve="60.255215" cap="flat"/>
+<wire x1="-2.032" y1="0" x2="-1.7891" y2="0.9634" width="0.254" layer="51" curve="-28.301701" cap="flat"/>
+<wire x1="-2.032" y1="0" x2="-1.7306" y2="-1.065" width="0.254" layer="51" curve="31.60822" cap="flat"/>
+<wire x1="1.5748" y1="1.2954" x2="1.5748" y2="0.7874" width="0.254" layer="51"/>
+<wire x1="1.5748" y1="-1.2954" x2="1.5748" y2="-0.8382" width="0.254" layer="51"/>
+<wire x1="1.8923" y1="1.2954" x2="1.8923" y2="0.7874" width="0.254" layer="21"/>
+<wire x1="1.8923" y1="-1.2954" x2="1.8923" y2="-0.8382" width="0.254" layer="21"/>
+<pad name="A" x="-1.27" y="0" drill="0.8128"/>
+<pad name="K" x="1.27" y="0" drill="0.8128"/>
+<text x="0" y="2.286" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0" y="-2.286" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+</package>
+<package name="LED_5MM-KIT" urn="urn:adsk.eagle:footprint:39311/1" library_version="1">
+<description>&lt;h3&gt;LED 5mm KIT PTH&lt;/h3&gt;
+&lt;p&gt;
+&lt;b&gt;Warning:&lt;/b&gt; This is the KIT version of this package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.&lt;/p&gt;
+
+&lt;p&gt;Specifications:
+&lt;ul&gt;&lt;li&gt;Pin count: 2&lt;/li&gt;
+&lt;li&gt;Pin pitch: 0.1inch&lt;/li&gt;
+&lt;li&gt;Diameter: 5mm&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+&lt;p&gt;Example Device:
+&lt;ul&gt;&lt;li&gt;LED&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;</description>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="22"/>
+<wire x1="-1.143" y1="0" x2="0" y2="1.143" width="0.1524" layer="51" curve="-90" cap="flat"/>
+<wire x1="0" y1="-1.143" x2="1.143" y2="0" width="0.1524" layer="51" curve="90" cap="flat"/>
+<wire x1="-1.651" y1="0" x2="0" y2="1.651" width="0.1524" layer="51" curve="-90" cap="flat"/>
+<wire x1="0" y1="-1.651" x2="1.651" y2="0" width="0.1524" layer="51" curve="90" cap="flat"/>
+<wire x1="-2.159" y1="0" x2="0" y2="2.159" width="0.1524" layer="51" curve="-90" cap="flat"/>
+<wire x1="0" y1="-2.159" x2="2.159" y2="0" width="0.1524" layer="51" curve="90" cap="flat"/>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="21"/>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.254" layer="21" curve="-286.260205" cap="flat"/>
+<wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="51"/>
+<pad name="A" x="-1.27" y="0" drill="0.8128" diameter="1.8796" stop="no"/>
+<pad name="K" x="1.27" y="0" drill="0.8128" diameter="1.8796" stop="no"/>
+<text x="0" y="3.3909" size="0.6096" layer="25" font="vector" ratio="20" align="bottom-center">&gt;NAME</text>
+<text x="0.0254" y="-3.3909" size="0.6096" layer="27" font="vector" ratio="20" align="top-center">&gt;VALUE</text>
+<polygon width="0.127" layer="30">
+<vertex x="-1.2675" y="-0.9525" curve="-90"/>
+<vertex x="-2.2224" y="-0.0228" curve="-90.011749"/>
+<vertex x="-1.27" y="0.9526" curve="-90"/>
+<vertex x="-0.32" y="-0.0254" curve="-90.024193"/>
+</polygon>
+<polygon width="0.127" layer="29">
+<vertex x="-1.27" y="-0.4445" curve="-90.012891"/>
+<vertex x="-1.7145" y="-0.0203" curve="-90"/>
+<vertex x="-1.27" y="0.447" curve="-90"/>
+<vertex x="-0.8281" y="-0.0101" curve="-90.012967"/>
+</polygon>
+<polygon width="0.127" layer="30">
+<vertex x="1.2725" y="-0.9525" curve="-90"/>
+<vertex x="0.3176" y="-0.0228" curve="-90.011749"/>
+<vertex x="1.27" y="0.9526" curve="-90"/>
+<vertex x="2.22" y="-0.0254" curve="-90.024193"/>
+</polygon>
+<polygon width="0.127" layer="29">
+<vertex x="1.27" y="-0.4445" curve="-90.012891"/>
+<vertex x="0.8255" y="-0.0203" curve="-90"/>
+<vertex x="1.27" y="0.447" curve="-90"/>
+<vertex x="1.7119" y="-0.0101" curve="-90.012967"/>
+</polygon>
+<circle x="0" y="0" radius="2.54" width="0.1524" layer="21"/>
 </package>
 <package name="LED-1206-BOTTOM" urn="urn:adsk.eagle:footprint:39312/1" library_version="1">
 <description>&lt;h3&gt;LED 1206 SMT&lt;/h3&gt;
@@ -5969,18 +6159,34 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <packageinstance name="7-SEGMENT-1&quot;PTH-EZ"/>
 </packageinstances>
 </package3d>
-<package3d name="LED-0603" urn="urn:adsk.eagle:package:39354/1" type="box" library_version="1">
-<description>LED 0603 SMT
-0603, surface mount.
+<package3d name="LED_5MM" urn="urn:adsk.eagle:package:39353/1" type="box" library_version="1">
+<description>LED 5mm PTH
+5 mm, round
 Specifications:
 Pin count: 2
-Pin pitch:0.075inch 
-Area: 0.06" x 0.03"
+Pin pitch: 0.1inch
+Diameter: 5mm
 
 Example device(s):
-LED - BLUE</description>
+LED-IR-THRU</description>
 <packageinstances>
-<packageinstance name="LED-0603"/>
+<packageinstance name="LED_5MM"/>
+</packageinstances>
+</package3d>
+<package3d name="LED_3MM" urn="urn:adsk.eagle:package:39361/1" type="box" library_version="1">
+<description>LED 3MM PTH
+
+3 mm, round.
+
+Specifications:
+Pin count: 2
+Pin pitch: 0.1inch
+Diameter: 3mm
+
+Example device(s):
+LED</description>
+<packageinstances>
+<packageinstance name="LED_3MM"/>
 </packageinstances>
 </package3d>
 <package3d name="LED-1206" urn="urn:adsk.eagle:package:39352/1" type="box" library_version="1">
@@ -5997,6 +6203,80 @@ Example device(s):
 LED</description>
 <packageinstances>
 <packageinstance name="LED-1206"/>
+</packageinstances>
+</package3d>
+<package3d name="LED-0603" urn="urn:adsk.eagle:package:39354/1" type="box" library_version="1">
+<description>LED 0603 SMT
+0603, surface mount.
+Specifications:
+Pin count: 2
+Pin pitch:0.075inch 
+Area: 0.06" x 0.03"
+
+Example device(s):
+LED - BLUE</description>
+<packageinstances>
+<packageinstance name="LED-0603"/>
+</packageinstances>
+</package3d>
+<package3d name="LED_10MM" urn="urn:adsk.eagle:package:39351/1" type="box" library_version="1">
+<description>LED 10mm PTH
+10 mm, round
+Specifications:
+Pin count: 2
+Pin pitch: 0.2inch
+Diameter: 10mm
+
+Example device(s):
+LED</description>
+<packageinstances>
+<packageinstance name="LED_10MM"/>
+</packageinstances>
+</package3d>
+<package3d name="FKIT-LED-1206" urn="urn:adsk.eagle:package:39355/1" type="box" library_version="1">
+<description>LED 1206 SMT
+1206, surface mount
+Specifications:
+Pin count: 2
+Area: 0.125"x 0.06" 
+
+Example device(s):
+LED</description>
+<packageinstances>
+<packageinstance name="FKIT-LED-1206"/>
+</packageinstances>
+</package3d>
+<package3d name="LED_3MM-NS" urn="urn:adsk.eagle:package:39356/1" type="box" library_version="1">
+<description>LED 3MM PTH- No Silk
+
+3 mm, round, no silk outline of package
+
+Specifications:
+Pin count: 2
+Pin pitch: 0.1inch
+Diameter: 3mm
+
+Example device(s):
+LED</description>
+<packageinstances>
+<packageinstance name="LED_3MM-NS"/>
+</packageinstances>
+</package3d>
+<package3d name="LED_5MM-KIT" urn="urn:adsk.eagle:package:39357/1" type="box" library_version="1">
+<description>LED 5mm KIT PTH
+
+Warning: This is the KIT version of this package. This package has a smaller diameter top stop mask, which doesn't cover the diameter of the pad. This means only the bottom side of the pads' copper will be exposed. You'll only be able to solder to the bottom side.
+
+Specifications:
+Pin count: 2
+Pin pitch: 0.1inch
+Diameter: 5mm
+
+Example Device:
+LED
+</description>
+<packageinstances>
+<packageinstance name="LED_5MM-KIT"/>
 </packageinstances>
 </package3d>
 <package3d name="LED-1206-BOTTOM" urn="urn:adsk.eagle:package:39358/1" type="box" library_version="1">
@@ -6603,37 +6883,36 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 </device>
 </devices>
 </deviceset>
-<deviceset name="LED-RED" urn="urn:adsk.eagle:component:39386/1" prefix="D" uservalue="yes" library_version="1">
-<description>&lt;h3&gt;Red SMD LED&lt;/h3&gt;
-&lt;p&gt;Used in manufacturing of most products at SparkFun&lt;/p&gt;
-
-&lt;p&gt;&lt;b&gt;Packages:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;&lt;b&gt;0603&lt;/b&gt; - SMD 0603 package &lt;a href="http://docs.avagotech.com/docs/AV02-0551EN"&gt;[Product Link]&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;0603 SMART&lt;/b&gt; - SMD 0603 SMART package ( more efficient and expensive)&lt;a href="http://www.osram-os.com/Graphics/XPic2/00077099_0.pdf"&gt;[Product Link]&lt;/li&gt;
-&lt;li&gt;&lt;b&gt; 1206&lt;/b&gt; - SMD1206  package &lt;a href="https://www.sparkfun.com/datasheets/DevTools/LilyPad/Q150OVS4.pdff"&gt;[Product Link]&lt;/li&gt;
-&lt;ul&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b&gt;SparkFun Products:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/821”&gt;Pro Mini 328 -5V&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/12757”&gt;RedBoard&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/13613”&gt;IOIO-OTG&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;</description>
+<deviceset name="LED" urn="urn:adsk.eagle:component:39399/1" prefix="D" uservalue="yes" library_version="1">
+<description>&lt;b&gt;LED (Generic)&lt;/b&gt;
+&lt;p&gt;Standard schematic elements and footprints for 5mm, 3mm, 1206, and 0603 sized LEDs. Generic LEDs with no color specified.&lt;/p&gt;</description>
 <gates>
 <gate name="G$1" symbol="LED" x="0" y="0"/>
 </gates>
 <devices>
-<device name="0603" package="LED-0603">
+<device name="5MM" package="LED_5MM">
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
-<connect gate="G$1" pin="C" pad="C"/>
+<connect gate="G$1" pin="C" pad="K"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39354/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39353/1"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="3MM" package="LED_3MM">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="K"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39361/1"/>
 </package3dinstances>
 <technologies>
 <technology name="">
-<attribute name="PROD_ID" value="DIO-00819"/>
-<attribute name="VALUE" value="RED" constant="no"/>
+<attribute name="PROD_ID" value="DIO-08794" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -6646,50 +6925,9 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <package3dinstance package3d_urn="urn:adsk.eagle:package:39352/1"/>
 </package3dinstances>
 <technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-09912"/>
-<attribute name="VALUE" value="RED" constant="no"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
-<device name="0603-SMART" package="LED-0603">
-<connects>
-<connect gate="G$1" pin="A" pad="A"/>
-<connect gate="G$1" pin="C" pad="C"/>
-</connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39354/1"/>
-</package3dinstances>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-11154" constant="no"/>
-<attribute name="VALUE" value="Red" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="LED-GREEN" urn="urn:adsk.eagle:component:39390/1" prefix="D" uservalue="yes" library_version="1">
-<description>&lt;h3&gt;Green SMD LED&lt;/h3&gt;
-&lt;p&gt;Used in manufacturing of various products at SparkFun&lt;/p&gt;
-
-&lt;p&gt;&lt;b&gt;Packages:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;&lt;b&gt;0603&lt;/b&gt; - SMD 0603 package &lt;a href="http://www.futureelectronics.com/en/technologies/semiconductors/optoelectronics/leds/Pages/9894312-LTST-C190GKT.aspx?CrossPart=HSMG-C190&amp;IM=0"&gt;[Product Link]&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;LilyPad 1206&lt;/b&gt; - SMD1206 LilyPad package &lt;a href="http://www.futureelectronics.com/en/Technologies/Product.aspx?ProductID=IN150NGHARVATEKCORPORATION2049943&amp;IM=0"&gt;[Product Link]&lt;/li&gt;
-&lt;li&gt;&lt;b&gt; 1206&lt;/b&gt; - SMD1206  package &lt;a href=http://www.futureelectronics.com/en/technologies/semiconductors/optoelectronics/leds/Pages/8315665-LTST-C150KGKT.aspx?IM=0"&gt;[Product Link]&lt;/li&gt;
-&lt;li&gt;&lt;b&gt; 1206 Bottom Mount&lt;/b&gt; -SMD 1206 Bottom Mount &lt;a href=http://www.digikey.com/product-detail/en/lite-on-inc/LTST-C230KGKT/160-1456-1-ND/386854"&gt;[Product Link]&lt;/li&gt;
-&lt;ul&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b&gt;SparkFun Products:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/821”&gt;Pro Mini 328 -5V&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/12757”&gt;RedBoard&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/13720”&gt;MP3 Trigger&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/11076”&gt;Makey Makey&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;</description>
-<gates>
-<gate name="G$1" symbol="LED" x="0" y="0"/>
-</gates>
-<devices>
 <device name="0603" package="LED-0603">
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
@@ -6699,40 +6937,55 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <package3dinstance package3d_urn="urn:adsk.eagle:package:39354/1"/>
 </package3dinstances>
 <technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-00821" constant="no"/>
-<attribute name="VALUE" value="GREEN" constant="no"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
-<device name="LILYPAD" package="LED-1206">
+<device name="10MM" package="LED_10MM">
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
 <connect gate="G$1" pin="C" pad="C"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39352/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39351/1"/>
 </package3dinstances>
 <technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-09910"/>
-<attribute name="VALUE" value="GREEN" constant="no"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
-<device name="1206" package="LED-1206">
+<device name="-FKIT-1206" package="FKIT-LED-1206">
 <connects>
 <connect gate="G$1" pin="A" pad="A"/>
 <connect gate="G$1" pin="C" pad="C"/>
 </connects>
 <package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39352/1"/>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39355/1"/>
 </package3dinstances>
 <technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-00862" constant="no"/>
-<attribute name="VALUE" value="GREEN" constant="no"/>
-</technology>
+<technology name=""/>
+</technologies>
+</device>
+<device name="-3MM-NO_SILK" package="LED_3MM-NS">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="K"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39356/1"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="5MM-KIT" package="LED_5MM-KIT">
+<connects>
+<connect gate="G$1" pin="A" pad="A"/>
+<connect gate="G$1" pin="C" pad="K"/>
+</connects>
+<package3dinstances>
+<package3dinstance package3d_urn="urn:adsk.eagle:package:39357/1"/>
+</package3dinstances>
+<technologies>
+<technology name=""/>
 </technologies>
 </device>
 <device name="1206-BOTTOM" package="LED-1206-BOTTOM">
@@ -6744,60 +6997,7 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <package3dinstance package3d_urn="urn:adsk.eagle:package:39358/1"/>
 </package3dinstances>
 <technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-11076" constant="no"/>
-<attribute name="VALUE" value="Green" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-<deviceset name="LED-BLUE" urn="urn:adsk.eagle:component:39388/1" prefix="D" uservalue="yes" library_version="1">
-<description>&lt;h3&gt;Blue SMD LED&lt;/h3&gt;
-&lt;p&gt;Used in manufacturing of various products at SparkFun&lt;/p&gt;
-
-
-&lt;p&gt;&lt;b&gt;Packages:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;&lt;b&gt;0603&lt;/b&gt; - SMD 0603 package &lt;a href="http://www.digikey.com/product-detail/en/SMLE12BC7TT86/511-1589-2-ND/1641808"&gt;[Product Link]&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;1206&lt;/b&gt; - SMD1206  package &lt;a href="http://www.digikey.com/product-detail/en/lite-on-inc/LTST-C150TBKT/160-1643-1-ND/573584"&gt;[Product Link]&lt;/li&gt;
-&lt;ul&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;b&gt;SparkFun Products:&lt;/b&gt;
-&lt;ul&gt;&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/13711”&gt;ESP8266 Thing-Dev Board&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=”https://www.sparkfun.com/products/12757”&gt;RedBoard&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/p&gt;</description>
-<gates>
-<gate name="G$1" symbol="LED" x="0" y="2.54"/>
-</gates>
-<devices>
-<device name="0603" package="LED-0603">
-<connects>
-<connect gate="G$1" pin="A" pad="A"/>
-<connect gate="G$1" pin="C" pad="C"/>
-</connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39354/1"/>
-</package3dinstances>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-08575"/>
-<attribute name="VALUE" value="BLUE"/>
-</technology>
-</technologies>
-</device>
-<device name="1206" package="LED-1206">
-<connects>
-<connect gate="G$1" pin="A" pad="A"/>
-<connect gate="G$1" pin="C" pad="C"/>
-</connects>
-<package3dinstances>
-<package3dinstance package3d_urn="urn:adsk.eagle:package:39352/1"/>
-</package3dinstances>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-09911"/>
-<attribute name="VALUE" value="BLUE" constant="no"/>
-</technology>
+<technology name=""/>
 </technologies>
 </device>
 </devices>
@@ -6851,18 +7051,6 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <part name="P+6" library="supply1" library_urn="urn:adsk.eagle:library:371" deviceset="VCC" device=""/>
 <part name="DISP1" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="7-SEGMENT-4DIGIT-20MM" device="-RED" package3d_urn="urn:adsk.eagle:package:39389/1" value="ATA8041ARBJ "/>
 <part name="U$1" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="7-SEGMENT-1DIGIT-1INCH" device="-RED" package3d_urn="urn:adsk.eagle:package:39384/1" value="YSD-1601AR4B-8"/>
-<part name="D1" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-RED" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="RED"/>
-<part name="D2" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-RED" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="RED"/>
-<part name="D3" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-RED" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="RED"/>
-<part name="D4" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-RED" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="RED"/>
-<part name="D5" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-GREEN" device="LILYPAD" package3d_urn="urn:adsk.eagle:package:39352/1" value="GREEN"/>
-<part name="D6" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-GREEN" device="LILYPAD" package3d_urn="urn:adsk.eagle:package:39352/1" value="GREEN"/>
-<part name="D7" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-GREEN" device="LILYPAD" package3d_urn="urn:adsk.eagle:package:39352/1" value="GREEN"/>
-<part name="D8" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-GREEN" device="LILYPAD" package3d_urn="urn:adsk.eagle:package:39352/1" value="GREEN"/>
-<part name="D9" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-BLUE" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="BLUE"/>
-<part name="D10" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-BLUE" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="BLUE"/>
-<part name="D11" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-BLUE" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="BLUE"/>
-<part name="D12" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED-BLUE" device="1206" package3d_urn="urn:adsk.eagle:package:39352/1" value="BLUE"/>
 <part name="R1" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="330OHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="330"/>
 <part name="R2" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="330OHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="330"/>
 <part name="R3" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="330OHM" device="-0603-1/10W-1%" package3d_urn="urn:adsk.eagle:package:39650/1" value="330"/>
@@ -6888,6 +7076,18 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <part name="SUPPLY5" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
 <part name="SUPPLY6" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
 <part name="SUPPLY7" library="SparkFun-PowerSymbols" library_urn="urn:adsk.eagle:library:530" deviceset="VCC" device=""/>
+<part name="D1" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D2" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D3" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D4" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D5" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D6" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D7" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D8" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D9" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D10" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D11" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
+<part name="D12" library="SparkFun-LED" library_urn="urn:adsk.eagle:library:529" deviceset="LED" device="5MM" package3d_urn="urn:adsk.eagle:package:39353/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -7026,54 +7226,6 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 </instance>
 <instance part="DISP1" gate="G$1" x="76.2" y="165.1" smashed="yes"/>
 <instance part="U$1" gate="G$1" x="106.68" y="60.96" smashed="yes"/>
-<instance part="D1" gate="G$1" x="86.36" y="20.32" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="16.891" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="22.225" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D2" gate="G$1" x="86.36" y="10.16" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="6.731" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="12.065" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D3" gate="G$1" x="86.36" y="0" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-3.429" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="1.905" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D4" gate="G$1" x="86.36" y="-10.16" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-13.589" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-8.255" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D5" gate="G$1" x="86.36" y="-20.32" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-23.749" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-18.415" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D6" gate="G$1" x="86.36" y="-30.48" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-33.909" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-28.575" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D7" gate="G$1" x="86.36" y="-38.1" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-41.529" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-36.195" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D8" gate="G$1" x="86.36" y="-48.26" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-51.689" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-46.355" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D9" gate="G$1" x="86.36" y="-58.42" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-61.849" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-56.515" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D10" gate="G$1" x="86.36" y="-68.58" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-72.009" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-66.675" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D11" gate="G$1" x="86.36" y="-78.74" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-82.169" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-76.835" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
-<instance part="D12" gate="G$1" x="86.36" y="-88.9" smashed="yes" rot="R90">
-<attribute name="NAME" x="90.932" y="-92.329" size="1.778" layer="95" font="vector" rot="R180"/>
-<attribute name="VALUE" x="90.932" y="-86.995" size="1.778" layer="96" font="vector" rot="R180" align="top-left"/>
-</instance>
 <instance part="R1" gate="G$1" x="78.74" y="20.32" smashed="yes">
 <attribute name="NAME" x="78.74" y="21.844" size="1.778" layer="95" font="vector" align="bottom-center"/>
 <attribute name="VALUE" x="78.74" y="18.796" size="1.778" layer="96" font="vector" align="top-center"/>
@@ -7167,6 +7319,18 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <instance part="SUPPLY7" gate="G$1" x="-88.9" y="147.32" smashed="yes">
 <attribute name="VALUE" x="-88.9" y="150.114" size="1.778" layer="96" align="bottom-center"/>
 </instance>
+<instance part="D1" gate="G$1" x="86.36" y="20.32" rot="R90"/>
+<instance part="D2" gate="G$1" x="86.36" y="10.16" rot="R90"/>
+<instance part="D3" gate="G$1" x="86.36" y="0" rot="R90"/>
+<instance part="D4" gate="G$1" x="86.36" y="-10.16" rot="R90"/>
+<instance part="D5" gate="G$1" x="86.36" y="-20.32" rot="R90"/>
+<instance part="D6" gate="G$1" x="86.36" y="-30.48" rot="R90"/>
+<instance part="D7" gate="G$1" x="86.36" y="-38.1" rot="R90"/>
+<instance part="D8" gate="G$1" x="86.36" y="-48.26" rot="R90"/>
+<instance part="D9" gate="G$1" x="86.36" y="-58.42" rot="R90"/>
+<instance part="D10" gate="G$1" x="86.36" y="-68.58" rot="R90"/>
+<instance part="D11" gate="G$1" x="86.36" y="-78.74" rot="R90"/>
+<instance part="D12" gate="G$1" x="86.36" y="-88.9" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -7369,42 +7533,42 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <junction x="-12.7" y="96.52"/>
 </segment>
 <segment>
-<pinref part="D1" gate="G$1" pin="C"/>
-<pinref part="D2" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="20.32" x2="91.44" y2="10.16" width="0.1524" layer="91"/>
-<pinref part="D3" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="10.16" x2="91.44" y2="0" width="0.1524" layer="91"/>
-<junction x="91.44" y="10.16"/>
-<pinref part="D4" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="0" x2="91.44" y2="-10.16" width="0.1524" layer="91"/>
-<junction x="91.44" y="0"/>
-<pinref part="D5" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-10.16" x2="91.44" y2="-20.32" width="0.1524" layer="91"/>
-<junction x="91.44" y="-10.16"/>
-<pinref part="D6" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-20.32" x2="91.44" y2="-30.48" width="0.1524" layer="91"/>
-<junction x="91.44" y="-20.32"/>
-<pinref part="D7" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-30.48" x2="91.44" y2="-38.1" width="0.1524" layer="91"/>
-<junction x="91.44" y="-30.48"/>
-<pinref part="D8" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-38.1" x2="91.44" y2="-48.26" width="0.1524" layer="91"/>
-<junction x="91.44" y="-38.1"/>
-<pinref part="D9" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-48.26" x2="91.44" y2="-58.42" width="0.1524" layer="91"/>
-<junction x="91.44" y="-48.26"/>
-<pinref part="D10" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-58.42" x2="91.44" y2="-68.58" width="0.1524" layer="91"/>
-<junction x="91.44" y="-58.42"/>
-<pinref part="D11" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-68.58" x2="91.44" y2="-78.74" width="0.1524" layer="91"/>
 <junction x="91.44" y="-68.58"/>
-<pinref part="D12" gate="G$1" pin="C"/>
 <wire x1="91.44" y1="-78.74" x2="91.44" y2="-88.9" width="0.1524" layer="91"/>
-<junction x="91.44" y="-78.74"/>
 <pinref part="GND11" gate="1" pin="GND"/>
 <wire x1="91.44" y1="-68.58" x2="104.14" y2="-68.58" width="0.1524" layer="91"/>
 <wire x1="104.14" y1="-68.58" x2="104.14" y2="-101.6" width="0.1524" layer="91"/>
+<pinref part="D1" gate="G$1" pin="C"/>
+<pinref part="D2" gate="G$1" pin="C"/>
+<junction x="91.44" y="10.16"/>
+<pinref part="D3" gate="G$1" pin="C"/>
+<junction x="91.44" y="0"/>
+<pinref part="D4" gate="G$1" pin="C"/>
+<junction x="91.44" y="-10.16"/>
+<pinref part="D5" gate="G$1" pin="C"/>
+<junction x="91.44" y="-20.32"/>
+<pinref part="D6" gate="G$1" pin="C"/>
+<junction x="91.44" y="-30.48"/>
+<pinref part="D7" gate="G$1" pin="C"/>
+<junction x="91.44" y="-38.1"/>
+<pinref part="D8" gate="G$1" pin="C"/>
+<junction x="91.44" y="-48.26"/>
+<pinref part="D9" gate="G$1" pin="C"/>
+<junction x="91.44" y="-58.42"/>
+<pinref part="D10" gate="G$1" pin="C"/>
+<pinref part="D11" gate="G$1" pin="C"/>
+<junction x="91.44" y="-78.74"/>
+<pinref part="D12" gate="G$1" pin="C"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -7799,78 +7963,6 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <wire x1="93.98" y1="99.06" x2="93.98" y2="147.32" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$22" class="0">
-<segment>
-<pinref part="D1" gate="G$1" pin="A"/>
-<pinref part="R1" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$23" class="0">
-<segment>
-<pinref part="D2" gate="G$1" pin="A"/>
-<pinref part="R2" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$24" class="0">
-<segment>
-<pinref part="D3" gate="G$1" pin="A"/>
-<pinref part="R3" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$25" class="0">
-<segment>
-<pinref part="D4" gate="G$1" pin="A"/>
-<pinref part="R4" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$26" class="0">
-<segment>
-<pinref part="D5" gate="G$1" pin="A"/>
-<pinref part="R5" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$27" class="0">
-<segment>
-<pinref part="D7" gate="G$1" pin="A"/>
-<pinref part="R7" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$28" class="0">
-<segment>
-<pinref part="D8" gate="G$1" pin="A"/>
-<pinref part="R8" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$29" class="0">
-<segment>
-<pinref part="D9" gate="G$1" pin="A"/>
-<pinref part="R9" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$30" class="0">
-<segment>
-<pinref part="D10" gate="G$1" pin="A"/>
-<pinref part="R10" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$31" class="0">
-<segment>
-<pinref part="D11" gate="G$1" pin="A"/>
-<pinref part="R11" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$32" class="0">
-<segment>
-<pinref part="D12" gate="G$1" pin="A"/>
-<pinref part="R12" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$33" class="0">
-<segment>
-<pinref part="D6" gate="G$1" pin="A"/>
-<pinref part="R6" gate="G$1" pin="2"/>
-</segment>
-</net>
 <net name="N$34" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="GPA0"/>
@@ -8058,6 +8150,78 @@ The LONGPADS Variant is used for a test jig, but you may like it because there i
 <wire x1="78.74" y1="48.26" x2="78.74" y2="96.52" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="GPB4"/>
 <wire x1="78.74" y1="96.52" x2="17.78" y2="96.52" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$16" class="0">
+<segment>
+<pinref part="R1" gate="G$1" pin="2"/>
+<pinref part="D1" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$17" class="0">
+<segment>
+<pinref part="R2" gate="G$1" pin="2"/>
+<pinref part="D2" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$18" class="0">
+<segment>
+<pinref part="R3" gate="G$1" pin="2"/>
+<pinref part="D3" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$19" class="0">
+<segment>
+<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="D4" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$20" class="0">
+<segment>
+<pinref part="R5" gate="G$1" pin="2"/>
+<pinref part="D5" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$21" class="0">
+<segment>
+<pinref part="R6" gate="G$1" pin="2"/>
+<pinref part="D6" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$22" class="0">
+<segment>
+<pinref part="R7" gate="G$1" pin="2"/>
+<pinref part="D7" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$23" class="0">
+<segment>
+<pinref part="R8" gate="G$1" pin="2"/>
+<pinref part="D8" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$24" class="0">
+<segment>
+<pinref part="R9" gate="G$1" pin="2"/>
+<pinref part="D9" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$25" class="0">
+<segment>
+<pinref part="R10" gate="G$1" pin="2"/>
+<pinref part="D10" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$26" class="0">
+<segment>
+<pinref part="R11" gate="G$1" pin="2"/>
+<pinref part="D11" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="N$27" class="0">
+<segment>
+<pinref part="R12" gate="G$1" pin="2"/>
+<pinref part="D12" gate="G$1" pin="A"/>
 </segment>
 </net>
 </nets>
